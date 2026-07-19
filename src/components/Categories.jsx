@@ -11,6 +11,39 @@ import shades from "../assets/Category/shades.jpeg";
 
 const Categories = () => {
   const navigate = useNavigate();
+
+  // Updated routing function to forward users directly to their dedicated pages
+  const handleCategoryClick = (categoryName) => {
+    switch (categoryName) {
+      case "tshirts":
+        navigate("/tshirts");
+        break;
+      case "shoes":
+        navigate("/shoes");
+        break;
+      case "pants":
+        navigate("/pants");
+        break;
+      case "accessories":
+        navigate("/accessories");
+        break;
+      case "belts":
+        navigate("/belts");
+        break;
+      case "bandana":
+        navigate("/bandana");
+        break;
+      case "watches":
+        navigate("/watches");
+        break;
+      case "shades":
+        navigate("/shades");
+        break;
+      default:
+        navigate("/products");
+    }
+  };
+
   return (
     <section className="bg-[#0f0f0f] py-10 px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col justify-center">
       <div className="max-w-7xl w-full mx-auto flex flex-col gap-6">
@@ -29,129 +62,151 @@ const Categories = () => {
           <div className="lg:col-span-2 flex flex-col gap-6">
 
             {/* Tshirt Card */}
-            <div className="relative h-80 sm:h-112.5 lg:h-125 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg cursor-pointer">
+            <div className="relative h-80 sm:h-112.5 lg:h-125 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg">
               <img
                 src={tshirt}
                 alt="T-Shirts"
                 className="w-full h-full object-cover group-hover:scale-105 duration-500 ease-out transition-transform"
               />
-              <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl py-4 border border-white/10 shadow-2xl">
-                <h2 className="text-center text-red-600 text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider transition-colors duration-300 group-hover:text-red-500">
+              <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl p-0 overflow-hidden">
+                <button
+                  onClick={() => handleCategoryClick("tshirts")}
+                  className="w-full text-center text-red-600 text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider py-4 transition-colors duration-300 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                >
                   T SHIRTS
-                </h2>
+                </button>
               </div>
             </div>
 
             {/* Sub-Section Layout: Accessories on Left + 2x2 Grid on Right */}
             <div className="grid grid-cols-3 gap-4">
 
-              {/* Column 1: Accessories Card (Spans full height on the left, dark backdrop theme) */}
-              <div className="relative h-44 sm:h-64 lg:h-72 rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer">
+              {/* Column 1: Accessories Card */}
+              <div className="relative h-44 sm:h-64 lg:h-72 rounded-xl overflow-hidden group border border-neutral-900">
                 <img
                   src={accessories}
                   alt="Accessories"
                   className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                 />
-                <div className="absolute bottom-3 left-2 right-2 bg-black/50 backdrop-blur-sm rounded-lg py-2 border border-white/5">
-                  <p className="text-center text-red-600 text-xs sm:text-sm lg:text-base font-black tracking-widest">
+                <div className="absolute bottom-3 left-2 right-2 bg-black/50 backdrop-blur-sm rounded-lg border border-white/5 overflow-hidden">
+                  <button
+                    onClick={() => handleCategoryClick("accessories")}
+                    className="w-full text-center text-red-600 text-xs sm:text-sm lg:text-base font-black tracking-widest py-2 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                  >
                     ACCESSORIES
-                  </p>
+                  </button>
                 </div>
               </div>
 
-              {/* Columns 2 & 3: 2x2 Nested Grid Area for Belts, Bandana, Watches, Shades */}
+              {/* Columns 2 & 3: 2x2 Nested Grid Area */}
               <div className="col-span-2 grid grid-cols-2 gap-4 h-44 sm:h-64 lg:h-72">
                 
-                {/* [Row 1, Item 1] Belts */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer">
+                {/* Belts */}
+                <div className="relative rounded-xl overflow-hidden group border border-neutral-900">
                   <img
                     src={belt}
                     alt="Belts"
                     className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                   />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded py-1 border border-white/5">
-                    <p className="text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
+                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
+                    <button
+                      onClick={() => handleCategoryClick("belts")}
+                      className="w-full text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                    >
                       BELTS
-                    </p>
+                    </button>
                   </div>
                 </div>
 
-                {/* [Row 1, Item 2] Bandana */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer">
+                {/* Bandana */}
+                <div className="relative rounded-xl overflow-hidden group border border-neutral-900">
                   <img
                     src={chain}
                     alt="Bandana"
                     className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                   />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded py-1 border border-white/5">
-                    <p className="text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
+                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
+                    <button
+                      onClick={() => handleCategoryClick("bandana")}
+                      className="w-full text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                    >
                       BANDANA
-                    </p>
+                    </button>
                   </div>
                 </div>
 
-                {/* [Row 2, Item 1] Watches */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer">
+                {/* Watches */}
+                <div className="relative rounded-xl overflow-hidden group border border-neutral-900">
                   <img
                     src={watch}
                     alt="Watches"
                     className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                   />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded py-1 border border-white/5">
-                    <p className="text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
+                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
+                    <button
+                      onClick={() => handleCategoryClick("watches")}
+                      className="w-full text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                    >
                       WATCHES
-                    </p>
+                    </button>
                   </div>
                 </div>
 
-                {/* [Row 2, Item 2] Shades */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer">
+                {/* Shades */}
+                <div className="relative rounded-xl overflow-hidden group border border-neutral-900">
                   <img
                     src={shades}
                     alt="Shades"
                     className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                   />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded py-1 border border-white/5">
-                    <p className="text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
+                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
+                    <button
+                      onClick={() => handleCategoryClick("shades")}
+                      className="w-full text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                    >
                       SHADES
-                    </p>
+                    </button>
                   </div>
                 </div>
 
               </div>
-
             </div>
-
           </div>
 
           {/* RIGHT COLUMN (Shoes & Tall Pants Box Layout) */}
           <div className="flex flex-col gap-6">
 
             {/* Shoes Card */}
-            <div className="relative h-44 sm:h-60 lg:h-64 rounded-xl overflow-hidden group border border-neutral-900 shadow-lg cursor-pointer">
+            <div className="relative h-44 sm:h-60 lg:h-64 rounded-xl overflow-hidden group border border-neutral-900 shadow-lg">
               <img
                 src={shoes}
                 alt="Shoes"
                 className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
               />
-              <div className="absolute bottom-3 left-3 right-3 bg-black/40 backdrop-blur-sm rounded-lg py-2.5 border border-white/5">
-                <h3 className="text-center text-red-600 text-sm sm:text-lg lg:text-xl font-black tracking-widest">
+              <div className="absolute bottom-3 left-3 right-3 bg-black/40 backdrop-blur-sm rounded-lg border border-white/5 overflow-hidden">
+                <button
+                  onClick={() => handleCategoryClick("shoes")}
+                  className="w-full text-center text-red-600 text-sm sm:text-lg lg:text-xl font-black tracking-widest py-2.5 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                >
                   SHOES
-                </h3>
+                </button>
               </div>
             </div>
 
             {/* Pants Card */}
-            <div className="relative flex-1 min-h-87.5 lg:min-h-0 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg cursor-pointer">
+            <div className="relative flex-1 min-h-87.5 lg:min-h-0 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg">
               <img
                 src={pants}
                 alt="Pants"
                 className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
               />
-              <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl py-3 border border-white/10">
-                <h2 className="text-center text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-wider">
+              <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden">
+                <button
+                  onClick={() => handleCategoryClick("pants")}
+                  className="w-full text-center text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-wider py-3 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                >
                   PANTS
-                </h2>
+                </button>
               </div>
             </div>
 
@@ -163,11 +218,11 @@ const Categories = () => {
         <div className="grid grid-cols-2 gap-6 mt-2">
           <button
             onClick={() => navigate("/products")}
-            className="bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl"
+            className="bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"
           >
             PRODUCTS
           </button>
-          <button className="bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl">
+          <button className="bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer">
             NEW
           </button>
         </div>

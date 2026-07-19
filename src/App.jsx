@@ -9,6 +9,18 @@ import CartDrawer from "./components/CartDrawer";
 import ProductDetail from "./components/ProductDetail";
 import More from "./components/More";
 
+// Import mapping strictly matching your VS Code explorer layout
+import Tshirt from "./components/Tshirt"; 
+import Shoes from "./components/Shoes";
+import Pants from "./components/Pants";
+import Accessories from "./components/Accessories";
+import Bandana from "./components/Bandana";
+import Shades from "./components/Shades";
+
+// CRITICAL FIXES: File names are pluralized in your directory
+import Belts from "./components/Belts"; // Matches Belts.jsx
+import Watches from "./components/Watches"; // Matches Watches.jsx
+
 // 1. Unified Home View Layout
 function Home({
   cartItems,
@@ -73,6 +85,103 @@ function App() {
             path="/products"
             element={
               <ProductDetail
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          {/* Dedicated Catalogue View Routes */}
+          <Route
+            path="/tshirts"
+            element={
+              <Tshirt
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          <Route
+            path="/shoes"
+            element={
+              <Shoes
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          <Route
+            path="/pants"
+            element={
+              <Pants
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          <Route
+            path="/accessories"
+            element={
+              <Accessories
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          <Route
+            path="/belts"
+            element={
+              <Belts
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          <Route
+            path="/bandana"
+            element={
+              <Bandana
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          <Route
+            path="/watches"
+            element={
+              <Watches
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          <Route
+            path="/shades"
+            element={
+              <Shades
                 cartItems={cartItems}
                 setCartItems={setCartItems}
                 wishlistedIds={wishlistedIds}
