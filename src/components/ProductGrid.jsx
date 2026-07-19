@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import dummyImage from '../assets/dummyImage.jpeg';
 
 const products = [
@@ -46,6 +47,7 @@ const ProductGrid = ({
   setWishlistedIds, 
   onProductClick
 }) => {
+  const navigate = useNavigate();
   const [wishlistAlert, setWishlistAlert] = useState(null);
   const [cartAlert, setCartAlert] = useState(null);
 
@@ -73,7 +75,6 @@ const ProductGrid = ({
       return [...prevItems, { ...product, quantity: 1 }];
     });
 
-    // Shows the visual toast notification in the corner
     setCartAlert(product.title);
     setTimeout(() => setCartAlert(null), 2500);
   };
@@ -123,7 +124,13 @@ const ProductGrid = ({
             return (
               <div 
                 key={product.id} 
-                onClick={() => onProductClick?.(product)}
+                onClick={() => {
+                  if (onProductClick) {
+                    onProductClick(product);
+                  } else {
+                    navigate(`/product/${product.id}`);
+                  }
+                }}
                 className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] cursor-pointer transition-all duration-500 ${product.gridClass}`}
               >
                 <img 
@@ -156,7 +163,7 @@ const ProductGrid = ({
                   
                   <button 
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevents card wrapper triggers
+                      e.stopPropagation(); 
                       triggerCart(product);
                     }}
                     className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition active:scale-90 shrink-0 z-10"

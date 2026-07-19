@@ -1,163 +1,188 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IoHeartOutline, IoHeart, IoChevronBackOutline, IoBagAddOutline } from 'react-icons/io5';
-import dummyImage from '../assets/Category/tshirt.png'; // Make sure paths align with your assets
+import { IoChevronBackOutline, IoHeart, IoHeartOutline, IoBagOutline, IoStar } from 'react-icons/io5';
+import dummyImage from '../assets/dummyImage.jpeg'; // Fallback layout asset
 
-const ProductDetailView = ({ cartItems, setCartItems, wishlistedIds, setWishlistedIds }) => {
+const ProductDetailView = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCartItems }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  // Dynamic states for interactive options
-  const [selectedColor, setSelectedColor] = useState('black');
+
+  // State configurations for selected variants
+  const [selectedColor, setSelectedColor] = useState('Black');
   const [selectedSize, setSelectedSize] = useState('L');
-  const [mainImage, setMainImage] = useState(dummyImage);
+  const [activeImageIdx, setActiveImageIdx] = useState(0);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id]);
-
-  // Placeholder static single product data modeled after the layout image
-  const product = {
-    id: id || "101",
+  // High-fidelity Mock Dataset matching your Brutalist spec
+  const productData = {
+    id: id,
     title: "PRINTED COTTON SHIRT",
-    subtitle: "Parvo in maecenas tempor nam feugiat. Congue nisl vitae suscipit tellus mauris a diam.",
     price: 1999,
     originalPrice: 2799,
     discount: "29% OFF",
+    images: [dummyImage, dummyImage, dummyImage, dummyImage],
+    description: "Purus in massa tempor nec feugiat. Congue nisi vitae suscipit tellus mauris a diam. Sem aliquam sem et tortor. Quis ipsum suspendisse ultrices gravida dictum fusce ut. Ut tristique dui sapien eget mi proin sed libero enim sed.",
     colors: [
-      { name: 'black', class: 'bg-black border-white' },
-      { name: 'darkred', class: 'bg-red-950 border-neutral-700' },
-      { name: 'green', class: 'bg-green-800 border-neutral-700' }
+      { name: 'Black', hex: '#111111' },
+      { name: 'Maroon', hex: '#4a1212' },
+      { name: 'Green', hex: '#166534' }
     ],
     sizes: ['S', 'M', 'L', 'XL'],
-    description: "Parvo in maecenas tempor nam feugiat. Congue nisl vitae suscipit tellus mauris a diam. Nibh aliquet cras et luctus. Quis varius sed vulputate odio ut enim. Ultrices dui sapien eget mi proin sed libero enim sed.",
     rating: 4.8,
     reviewCount: 256,
     featuredReview: {
       author: "Theresa Webb",
       date: "May 1, 2026",
-      stars: 5,
-      comment: "Cursus sit amet dictum sit amet justo donec enim. Commodo ullamcorper a lacus vestibulum sed."
+      text: "Cursus sit amet dictum sit amet justo donec enim. Commodo ullamcorper a lacus vestibulum. Its an amazing product, superior raw edge texture."
     }
   };
 
-  const isWishlisted = wishlistedIds.includes(Number(product.id));
+  const isWishlisted = wishlistedIds.includes(Number(id)) || wishlistedIds.includes(id);
 
   const toggleWishlist = () => {
     if (isWishlisted) {
-      setWishlistedIds(wishlistedIds.filter(favId => favId !== Number(product.id)));
+      setWishlistedIds(wishlistedIds.filter(item => String(item) !== String(id)));
     } else {
-      setWishlistedIds([...wishlistedIds, Number(product.id)]);
+      setWishlistedIds([...wishlistedIds, Number(id)]);
     }
   };
 
-  const handleAddToCart = () => {
-    const cartProduct = {
-      id: `${product.id}-${selectedColor}-${selectedSize}`,
-      title: product.title,
-      price: `₹${product.price.toLocaleString('en-IN')}.00`,
-      image: mainImage,
+  const handleBuyNow = () => {
+    const orderItem = {
+      id: `${productData.id}-${selectedColor}-${selectedSize}`,
+      title: productData.title,
+      price: `₹${productData.price.toLocaleString('en-IN')}`,
+      image: productData.images[0],
       color: selectedColor,
-      size: selectedSize
+      size: selectedSize,
+      quantity: 1
     };
-    setCartItems([...cartItems, cartProduct]);
+    setCartItems([...cartItems, orderItem]);
+    navigate('/cart');
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-neutral-300 font-mono pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        
-        {/* Back Button */}
+    <div className="min-h-screen bg-[#070707] text-neutral-400 font-mono pt-28 pb-24 px-4 sm:px-8 md:px-16 xl:px-24 selection:bg-neutral-800">
+      
+      {/* 1. Global Navigation Breadcrumb Control */}
+      <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between border-b border-[#141414] pb-4">
         <button 
           onClick={() => navigate(-1)} 
-          className="flex items-center gap-2 text-neutral-400 hover:text-white transition mb-6 uppercase text-sm tracking-wider"
+          className="flex items-center gap-2 text-xs font-bold tracking-[0.2em] text-neutral-400 hover:text-white transition duration-200"
         >
-          <IoChevronBackOutline className="text-xl" /> Back
+          <IoChevronBackOutline className="text-sm" /> BACK TO CATALOG
         </button>
+        <span className="text-[10px] text-neutral-600 tracking-widest uppercase">
+          SKU // KLV-00{id}-2026
+        </span>
+      </div>
 
-        {/* Main Grid: Left Media Layout + Right Product Summary */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          
-          {/* LEFT COLUMN: Media Showcase Layout */}
-          <div className="flex flex-col gap-4">
-            <div className="relative rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800 aspect-4/5">
-              <img src={mainImage} alt={product.title} className="w-full h-full object-cover" />
-              
-              {/* Floating Wishlist Button */}
-              <button 
-                onClick={toggleWishlist}
-                className="absolute top-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-full text-white hover:text-red-600 transition border border-white/10"
+      {/* 2. Primary Layout Grid Split System */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
+        
+        {/* Left Aspect Media Workspace (Columns 1-7) */}
+        <div className="lg:col-span-7 space-y-4 lg:sticky lg:top-28">
+          <div className="relative w-full aspect-4/5 bg-[#0e0e0e] border border-[#141414] rounded-2xl overflow-hidden group">
+            <img 
+              src={productData.images[activeImageIdx]} 
+              alt={productData.title} 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" 
+            />
+            
+            {/* Wishlist floating toggle overlay */}
+            <button 
+              onClick={toggleWishlist} 
+              className="absolute top-6 right-6 bg-black/70 backdrop-blur-md p-3.5 rounded-full text-red-500 border border-white/5 transition hover:scale-110"
+            >
+              {isWishlisted ? <IoHeart className="text-base" /> : <IoHeartOutline className="text-white text-base" />}
+            </button>
+          </div>
+
+          {/* Web Presentation Desktop Gallery Ribbon */}
+          <div className="grid grid-cols-4 gap-4">
+            {productData.images.map((img, index) => (
+              <div 
+                key={index}
+                onClick={() => setActiveImageIdx(index)}
+                className={`aspect-square bg-[#0e0e0e] border rounded-xl overflow-hidden cursor-pointer transition duration-200 hover:border-neutral-500 ${
+                  activeImageIdx === index ? 'border-neutral-200 ring-1 ring-neutral-200' : 'border-[#141414]'
+                }`}
               >
-                {isWishlisted ? <IoHeart className="text-xl text-red-600" /> : <IoHeartOutline className="text-xl" />}
-              </button>
-            </div>
+                <img src={img} alt="Product frame variant preview" className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition" />
+              </div>
+            ))}
+          </div>
+        </div>
 
-            {/* Thumbnail Navigation Row */}
-            <div className="grid grid-cols-4 gap-2">
-              {[1, 2, 3, 4].map((thumb, index) => (
-                <div 
-                  key={index}
-                  onClick={() => setMainImage(dummyImage)}
-                  className={`aspect-square rounded-xl overflow-hidden bg-neutral-900 border cursor-pointer transition ${index === 3 ? 'relative' : ''} border-neutral-800 hover:border-red-600`}
-                >
-                  <img src={dummyImage} alt="thumbnail" className="w-full h-full object-cover opacity-60" />
-                  {index === 3 && (
-                    <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-lg font-bold text-neutral-400">
-                      +5
-                    </div>
-                  )}
-                </div>
-              ))}
+        {/* Right Aspect Dynamic Interface Board (Columns 8-12) */}
+        <div className="lg:col-span-5 space-y-5">
+          
+          {/* Module: Header Copywriting Info */}
+          <div className="border border-[#141414] bg-[#0a0a0a] rounded-xl p-6 shadow-xl">
+            <h1 className="text-white text-xl sm:text-2xl font-black tracking-wider uppercase mb-3">
+              {productData.title}
+            </h1>
+            <p className="text-xs text-neutral-500 leading-relaxed mb-4">
+              {productData.description}
+            </p>
+            <div className="flex items-baseline gap-3 pt-2 border-t border-[#141414]">
+              <span className="text-neutral-600 font-bold text-sm line-through">
+                ₹{productData.originalPrice.toLocaleString('en-IN')}.00
+              </span>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Info, Sizing, Purchasing Actions */}
-          <div className="flex flex-col gap-6">
+          {/* Module: Commercial Pricing and Checkouts */}
+          <div className="border border-[#141414] bg-[#0a0a0a] rounded-xl p-6 flex flex-row items-center justify-between gap-6 shadow-xl">
             <div>
-              <h1 className="text-2xl sm:text-4xl font-black text-white tracking-widest uppercase mb-2">
-                {product.title}
-              </h1>
-              <p className="text-xs sm:text-sm text-neutral-500 leading-relaxed font-sans">
-                {product.subtitle}
-              </p>
+              <span className="text-red-600 font-black text-2xl block tracking-wide">
+                ₹{productData.price.toLocaleString('en-IN')}
+              </span>
+              <span className="text-[10px] text-neutral-500 tracking-[0.2em] block font-bold uppercase mt-0.5">
+                {productData.discount}
+              </span>
             </div>
 
-            <div className="border-t border-b border-neutral-900 py-4 flex flex-col gap-1">
-              <span className="text-neutral-500 line-through text-sm font-sans">₹{product.originalPrice}.00</span>
-              <div className="flex items-baseline gap-4">
-                <span className="text-2xl sm:text-3xl font-black text-white">₹{product.price.toLocaleString('en-IN')}</span>
-                <span className="text-red-500 font-bold text-sm tracking-widest bg-red-950/40 px-2 py-0.5 rounded border border-red-900/30">{product.discount}</span>
-              </div>
-            </div>
+            <button 
+              onClick={handleBuyNow}
+              className="flex-1 h-14 bg-white border border-transparent rounded-xl flex items-center justify-center gap-2.5 text-xs font-black text-black tracking-[0.25em] uppercase transition hover:bg-neutral-200 duration-150 active:scale-[0.98]"
+            >
+              <IoBagOutline className="text-lg" /> BUY NOW
+            </button>
+          </div>
 
-            {/* Color Swatch Selection */}
-            <div>
-              <h3 className="text-xs font-bold tracking-widest uppercase text-neutral-400 mb-3">Colour</h3>
-              <div className="flex gap-4">
-                {product.colors.map((color) => (
-                  <button
+          {/* Module: Industrial Configurations Matrix (Color & Size selectors side-by-side) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            {/* Color Grid Module */}
+            <div className="border border-[#141414] bg-[#0a0a0a] rounded-xl p-4 flex flex-col justify-center">
+              <span className="text-[10px] text-neutral-500 tracking-widest uppercase font-bold mb-3 block">COLOUR</span>
+              <div className="flex items-center gap-3">
+                {productData.colors.map((color) => (
+                  <button 
                     key={color.name}
                     onClick={() => setSelectedColor(color.name)}
-                    className={`w-8 h-8 rounded-full border-2 transition-all duration-300 ${color.class} ${
-                      selectedColor === color.name ? 'scale-125 ring-2 ring-red-600 ring-offset-2 ring-offset-[#0f0f0f]' : 'opacity-80'
+                    style={{ backgroundColor: color.hex }}
+                    className={`w-7 h-7 rounded-full border-2 transition duration-200 ${
+                      selectedColor === color.name ? 'border-white scale-110 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'
                     }`}
+                    title={color.name}
                   />
                 ))}
               </div>
             </div>
 
-            {/* Size Configuration Area */}
-            <div>
-              <h3 className="text-xs font-bold tracking-widest uppercase text-neutral-400 mb-3">Size</h3>
-              <div className="flex flex-wrap gap-2">
-                {product.sizes.map((size) => (
+            {/* Sizes Box Module */}
+            <div className="border border-[#141414] bg-[#0a0a0a] rounded-xl p-4">
+              <span className="text-[10px] text-neutral-500 tracking-widest uppercase font-bold mb-3 block">SIZE</span>
+              <div className="flex gap-2 flex-wrap">
+                {productData.sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`min-w-12 h-10 px-3 flex items-center justify-center border text-sm font-bold rounded transition-all duration-200 ${
-                      selectedSize === size
-                        ? 'border-red-600 bg-red-600/10 text-red-500'
-                        : 'border-neutral-800 bg-black text-neutral-400 hover:border-neutral-700'
+                    className={`w-8 h-8 rounded-lg border text-xs font-black flex items-center justify-center transition-all duration-150 ${
+                      selectedSize === size 
+                        ? 'border-yellow-500 bg-yellow-500/10 text-yellow-500' 
+                        : 'border-[#1c1c1c] text-neutral-400 hover:border-neutral-600'
                     }`}
                   >
                     {size}
@@ -166,71 +191,83 @@ const ProductDetailView = ({ cartItems, setCartItems, wishlistedIds, setWishlist
               </div>
             </div>
 
-            {/* Checkout Action Control Group */}
-            <div className="flex gap-4 pt-2">
-              <button 
-                onClick={handleAddToCart}
-                className="flex items-center justify-center border border-neutral-800 bg-black hover:bg-neutral-900 text-white rounded-xl px-6 h-14 transition duration-300 group"
-              >
-                <IoBagAddOutline className="text-2xl group-hover:text-red-500 transition" />
-              </button>
-              <button className="flex-1 bg-white hover:bg-neutral-200 text-black font-black tracking-widest text-sm rounded-xl h-14 uppercase transition duration-300">
-                Buy Now
-              </button>
-            </div>
+          </div>
 
-            <hr className="border-neutral-950 my-2" />
+          {/* Module: Full Technical Overview Section */}
+          <div className="border border-[#141414] bg-[#0a0a0a] rounded-xl p-6 shadow-xl">
+            <h3 className="text-neutral-300 text-xs font-black tracking-widest uppercase mb-3">
+              SPECIFICATION DETAILS
+            </h3>
+            <p className="text-[11px] text-neutral-500 leading-relaxed">
+              Knitted from medium-weight premium open-end cotton yarn featuring high-contrast screenprint designs. Preshrunk box-fit structure with ribbed crewneck collar lining optimized for standard clean aesthetic geometry.
+            </p>
+          </div>
 
-            {/* Description Submodule */}
-            <div>
-              <h2 className="text-lg font-black text-white tracking-widest uppercase mb-2">Description</h2>
-              <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-sans">
-                {product.description}
-              </p>
-            </div>
-
-            {/* Reviews Metric Module */}
-            <div className="border border-neutral-900 bg-black rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-xs font-bold text-neutral-400 tracking-widest uppercase mb-1">Reviews</h3>
-                <div className="text-3xl font-black text-white mb-1">{product.rating}</div>
-                <div className="text-red-500 text-sm mb-1">★★★★★</div>
-                <div className="text-[10px] text-neutral-500 font-sans">({product.reviewCount} Reviews)</div>
+          {/* Module: Aggregated Feedback Review Grid Panel */}
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+            
+            {/* Average Score Box Panel */}
+            <div className="sm:col-span-5 border border-[#141414] bg-[#0a0a0a] rounded-xl p-4 flex flex-col justify-center items-center text-center">
+              <span className="text-[10px] text-neutral-500 tracking-widest uppercase font-bold mb-1">RATING MATRIX</span>
+              <span className="text-white text-3xl font-black tracking-tighter">{productData.rating}</span>
+              <div className="flex gap-0.5 my-1.5 text-yellow-500 text-xs">
+                <IoStar /><IoStar /><IoStar /><IoStar /><IoStar className="text-neutral-700" />
               </div>
-              <div className="border-t sm:border-t-0 sm:border-l border-neutral-900 pt-4 sm:pt-0 sm:pl-4 flex flex-col gap-1 font-sans">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="font-bold text-white font-mono">{product.featuredReview.author}</span>
-                  <span className="text-neutral-500 text-[10px]">{product.featuredReview.date}</span>
+              <span className="text-[9px] text-neutral-600 tracking-wide font-bold">({productData.reviewCount} VERIFIED)</span>
+            </div>
+
+            {/* Highlighted Review Message Box */}
+            <div className="sm:col-span-7 border border-[#141414] bg-[#0a0a0a] rounded-xl p-4 flex gap-3 items-start">
+              <div className="w-8 h-8 rounded-full bg-linear-to-tr from-amber-600 to-yellow-500 shrink-0 border border-neutral-800" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-0.5 text-yellow-500 text-[8px] mb-1">
+                  <IoStar /><IoStar /><IoStar /><IoStar /><IoStar />
                 </div>
-                <div className="text-red-500 text-xs">★★★★★</div>
-                <p className="text-[11px] text-neutral-400 leading-normal italic">
-                  "{product.featuredReview.comment}"
+                <h4 className="text-white text-[10px] font-bold truncate uppercase">{productData.featuredReview.author}</h4>
+                <span className="text-[8px] text-neutral-600 font-sans block mb-1.5">{productData.featuredReview.date}</span>
+                <p className="text-[9px] text-neutral-500 leading-normal italic line-clamp-2">
+                  "{productData.featuredReview.text}"
                 </p>
               </div>
             </div>
 
           </div>
-        </div>
 
-        {/* Bottom Section: Cross-Sell Carousel Mockup */}
-        <div className="mt-16 pt-8 border-t border-neutral-900">
-          <h2 className="text-xl font-black tracking-widest text-white uppercase mb-6">You Might Also Like</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="group border border-neutral-900 bg-black rounded-xl overflow-hidden cursor-pointer">
-                <div className="aspect-4/5 bg-neutral-900 overflow-hidden">
-                  <img src={dummyImage} alt="Recommendation" className="w-full h-full object-cover group-hover:scale-105 duration-300 transition-transform" />
-                </div>
-                <div className="p-3">
-                  <h4 className="text-xs font-black tracking-wider text-white truncate uppercase mb-1">PRINTED COTTON SHIRT</h4>
-                  <p className="text-xs font-bold text-neutral-400">₹1,999.00</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
-
       </div>
+
+      {/* 3. Catalog Recommendations Layout (Horizontal Product Stream) */}
+      <div className="max-w-7xl mx-auto border-t border-[#141414] pt-12">
+        <h3 className="text-neutral-400 text-sm font-black tracking-[0.25em] uppercase mb-6">
+          YOU MIGHT ALSO LIKE
+        </h3>
+        
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {[1, 2, 3, 4, 5].map((item) => (
+            <div 
+              key={item}
+              onClick={() => {
+                navigate(`/product/${item}`);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="bg-[#0a0a0a] border border-[#141414] rounded-xl p-3 cursor-pointer transition-all duration-300 hover:border-neutral-700 hover:-translate-y-1 group"
+            >
+              <div className="w-full aspect-4/5 rounded-lg bg-[#0e0e0e] overflow-hidden mb-3">
+                <img 
+                  src={dummyImage} 
+                  alt="Recommended architectural canvas catalog view" 
+                  className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition duration-300" 
+                />
+              </div>
+              <p className="text-[10px] text-neutral-300 font-bold tracking-wider uppercase truncate group-hover:text-white transition">
+                BASEBALL CAP - RED
+              </p>
+              <p className="text-xs text-red-600 font-black mt-1">₹1,999</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 };

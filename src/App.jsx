@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -7,21 +7,29 @@ import Categories from "./components/Categories";
 import ProductGrid from "./components/ProductGrid";
 import CartDrawer from "./components/CartDrawer";
 import ProductDetail from "./components/ProductDetail";
-import ProductDetailView from "./components/ProductDetailView"; // Dynamic dynamic product dashboard detail view
-import Wishlist from "./components/Wishlist"; // Dedicated application wishlist display screen
+import ProductDetailView from "./components/ProductDetailView"; 
+import Wishlist from "./components/Wishlist"; 
 import More from "./components/More";
 
-// Import mapping strictly matching your VS Code explorer layout
 import Tshirt from "./components/Tshirt"; 
 import Shoes from "./components/Shoes";
 import Pants from "./components/Pants";
 import Accessories from "./components/Accessories";
 import Bandana from "./components/Bandana";
 import Shades from "./components/Shades";
+import Belts from "./components/Belts"; 
+import Watches from "./components/Watches"; 
 
-// CRITICAL FIXES: File names are pluralized in your directory
-import Belts from "./components/Belts"; // Matches Belts.jsx
-import Watches from "./components/Watches"; // Matches Watches.jsx
+// A tiny internal behavior hook to instantly scroll the window to coordinates (0,0) on any location changes
+function ScrollToTopSystem() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 // 1. Unified Home View Layout
 function Home({
@@ -40,8 +48,6 @@ function Home({
         wishlistedIds={wishlistedIds}
         setWishlistedIds={setWishlistedIds}
       />
-      
-      {/* Renders the "MORE ->" link component right below the product grid */}
       <More />
     </div>
   );
@@ -53,7 +59,6 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [wishlistedIds, setWishlistedIds] = useState([]);
 
-  // Dynamically calculate cart badge count globally (safeguarded for missing item.quantity elements)
   const totalCartCount = cartItems.reduce(
     (acc, item) => acc + (item.quantity || 1),
     0
@@ -61,12 +66,15 @@ function App() {
 
   return (
     <BrowserRouter>
+      {/* Listens globally inside BrowserRouter to force viewport jumps to top immediately on navigation */}
+      <ScrollToTopSystem />
+
       <div className="bg-[#0f0f0f] min-h-screen text-white relative">
         
         {/* Global Navigation Bar */}
         <Navbar
           cartCount={totalCartCount}
-          wishlistCount={wishlistedIds.length} // Synchronized data-driven update badge count
+          wishlistCount={wishlistedIds.length} 
           onCartClick={() => setIsCartOpen(true)}
         />
 
