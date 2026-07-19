@@ -7,6 +7,8 @@ import Categories from "./components/Categories";
 import ProductGrid from "./components/ProductGrid";
 import CartDrawer from "./components/CartDrawer";
 import ProductDetail from "./components/ProductDetail";
+import ProductDetailView from "./components/ProductDetailView"; // Dynamic dynamic product dashboard detail view
+import Wishlist from "./components/Wishlist"; // Dedicated application wishlist display screen
 import More from "./components/More";
 
 // Import mapping strictly matching your VS Code explorer layout
@@ -51,9 +53,9 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [wishlistedIds, setWishlistedIds] = useState([]);
 
-  // Dynamically calculate cart badge count globally
+  // Dynamically calculate cart badge count globally (safeguarded for missing item.quantity elements)
   const totalCartCount = cartItems.reduce(
-    (acc, item) => acc + item.quantity,
+    (acc, item) => acc + (item.quantity || 1),
     0
   );
 
@@ -64,6 +66,7 @@ function App() {
         {/* Global Navigation Bar */}
         <Navbar
           cartCount={totalCartCount}
+          wishlistCount={wishlistedIds.length} // Synchronized data-driven update badge count
           onCartClick={() => setIsCartOpen(true)}
         />
 
@@ -91,6 +94,32 @@ function App() {
                 setWishlistedIds={setWishlistedIds}
               />
             }
+          />
+
+          {/* DYNAMIC PRODUCT SPECIFIC ROUTE PARAMETER */}
+          <Route
+            path="/product/:id"
+            element={
+              <ProductDetailView
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                wishlistedIds={wishlistedIds}
+                setWishlistedIds={setWishlistedIds}
+              />
+            }
+          />
+
+          {/* DEDICATED APPLICATION WISHLIST MANAGEMENT VIEW */}
+          <Route 
+            path="/wishlist" 
+            element={
+              <Wishlist 
+                wishlistedIds={wishlistedIds} 
+                setWishlistedIds={setWishlistedIds}
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+              />
+            } 
           />
 
           {/* Dedicated Catalogue View Routes */}
