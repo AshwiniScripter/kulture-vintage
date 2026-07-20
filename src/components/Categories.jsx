@@ -73,7 +73,7 @@ const Categories = () => {
                   onClick={() => handleCategoryClick("tshirts")}
                   className="w-full text-center text-red-600 text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider py-4 transition-colors duration-300 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                 >
-                  T SHIRTS
+                  UPPER WARE
                 </button>
               </div>
             </div>
@@ -205,7 +205,7 @@ const Categories = () => {
                   onClick={() => handleCategoryClick("pants")}
                   className="w-full text-center text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-wider py-3 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                 >
-                  PANTS
+                  BOTTOM WARE
                 </button>
               </div>
             </div>
@@ -226,7 +226,6 @@ const Categories = () => {
             NEW
           </button>
         </div>
-
       </div>
     </section>
   );

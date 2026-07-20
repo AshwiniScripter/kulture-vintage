@@ -53,7 +53,7 @@ const ProductDetail = ({
                 />
                 <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl py-4 border border-white/10 shadow-2xl">
                   <h2 className="text-center text-red-600 text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider transition-colors duration-300 group-hover:text-red-500">
-                    T SHIRTS
+                    UPPER WARE
                   </h2>
                 </div>
               </div>
@@ -187,7 +187,7 @@ const ProductDetail = ({
                 />
                 <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl py-3 border border-white/10">
                   <h2 className="text-center text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-wider">
-                    PANTS
+                    LOWER WARE
                   </h2>
                 </div>
               </div>
