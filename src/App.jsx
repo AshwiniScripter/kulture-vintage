@@ -10,6 +10,7 @@ import ProductDetail from "./components/ProductDetail";
 import ProductDetailView from "./components/ProductDetailView"; 
 import Wishlist from "./components/Wishlist"; 
 import More from "./components/More";
+import Footer from "./components/Footer"; // 1. IMPORTED FOOTER
 
 import Tshirt from "./components/Tshirt"; 
 import Shoes from "./components/Shoes";
@@ -65,169 +66,169 @@ function App() {
   );
 
   return (
-    /* ADDED basename HERE */
     <BrowserRouter basename="/kulture-vintage">
       {/* Listens globally inside BrowserRouter to force viewport jumps to top immediately on navigation */}
       <ScrollToTopSystem />
 
-      <div className="bg-[#0f0f0f] min-h-screen text-white relative">
-        
-        {/* Global Navigation Bar */}
-        <Navbar
-          cartCount={totalCartCount}
-          wishlistCount={wishlistedIds.length} 
-          onCartClick={() => setIsCartOpen(true)}
-        />
-
-        {/* Client Side View Routes */}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Home
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
+      <div className="bg-[#0f0f0f] min-h-screen text-white relative flex flex-col justify-between">
+        <div>
+          {/* Global Navigation Bar */}
+          <Navbar
+            cartCount={totalCartCount}
+            wishlistCount={wishlistedIds.length} 
+            onCartClick={() => setIsCartOpen(true)}
           />
 
-          <Route
-            path="/products"
-            element={
-              <ProductDetail
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+          {/* Client Side View Routes */}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          {/* DYNAMIC PRODUCT SPECIFIC ROUTE PARAMETER */}
-          <Route
-            path="/product/:id"
-            element={
-              <ProductDetailView
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+            <Route
+              path="/products"
+              element={
+                <ProductDetail
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          {/* DEDICATED APPLICATION WISHLIST MANAGEMENT VIEW */}
-          <Route 
-            path="/wishlist" 
-            element={
-              <Wishlist 
-                wishlistedIds={wishlistedIds} 
-                setWishlistedIds={setWishlistedIds}
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-              />
-            } 
-          />
+            {/* DYNAMIC PRODUCT SPECIFIC ROUTE PARAMETER */}
+            <Route
+              path="/product/:id"
+              element={
+                <ProductDetailView
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          {/* Dedicated Catalogue View Routes */}
-          <Route
-            path="/tshirts"
-            element={
-              <Tshirt
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+            {/* DEDICATED APPLICATION WISHLIST MANAGEMENT VIEW */}
+            <Route 
+              path="/wishlist" 
+              element={
+                <Wishlist 
+                  wishlistedIds={wishlistedIds} 
+                  setWishlistedIds={setWishlistedIds}
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                />
+              } 
+            />
 
-          <Route
-            path="/shoes"
-            element={
-              <Shoes
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+            {/* Dedicated Catalogue View Routes */}
+            <Route
+              path="/tshirts"
+              element={
+                <Tshirt
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          <Route
-            path="/pants"
-            element={
-              <Pants
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+            <Route
+              path="/shoes"
+              element={
+                <Shoes
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          <Route
-            path="/accessories"
-            element={
-              <Accessories
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+            <Route
+              path="/pants"
+              element={
+                <Pants
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          <Route
-            path="/belts"
-            element={
-              <Belts
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+            <Route
+              path="/accessories"
+              element={
+                <Accessories
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          <Route
-            path="/bandana"
-            element={
-              <Bandana
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+            <Route
+              path="/belts"
+              element={
+                <Belts
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          <Route
-            path="/watches"
-            element={
-              <Watches
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
+            <Route
+              path="/bandana"
+              element={
+                <Bandana
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
 
-          <Route
-            path="/shades"
-            element={
-              <Shades
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                wishlistedIds={wishlistedIds}
-                setWishlistedIds={setWishlistedIds}
-              />
-            }
-          />
-        </Routes>
+            <Route
+              path="/watches"
+              element={
+                <Watches
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
+
+            <Route
+              path="/shades"
+              element={
+                <Shades
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
+            />
+          </Routes>
+        </div>
 
         {/* Global Slide-Out Overlay Canvas Panel */}
         <CartDrawer
@@ -236,6 +237,9 @@ function App() {
           cartItems={cartItems}
           setCartItems={setCartItems}
         />
+
+        {/* 2. ADDED GLOBAL FOOTER HERE */}
+        <Footer />
       </div>
     </BrowserRouter>
   );
