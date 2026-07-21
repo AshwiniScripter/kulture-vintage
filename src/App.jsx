@@ -65,7 +65,8 @@ function App() {
   );
 
   return (
-    <BrowserRouter>
+    /* ADDED basename HERE */
+    <BrowserRouter basename="/kulture-vintage">
       {/* Listens globally inside BrowserRouter to force viewport jumps to top immediately on navigation */}
       <ScrollToTopSystem />
 
