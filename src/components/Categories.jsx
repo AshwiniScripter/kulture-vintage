@@ -4,10 +4,6 @@ import tshirt from "../assets/Category/tshirt.png";
 import shoes from "../assets/Category/shoes.png";
 import pants from "../assets/Category/pants.png";
 import accessories from "../assets/Category/accessories.png";
-import belt from "../assets/Category/belt.jpeg";
-import watch from "../assets/Category/watch.jpeg";
-import chain from "../assets/Category/bandana.jpeg";
-import shades from "../assets/Category/shades.jpeg";
 
 const Categories = () => {
   const navigate = useNavigate();
@@ -26,18 +22,6 @@ const Categories = () => {
         break;
       case "accessories":
         navigate("/accessories");
-        break;
-      case "belts":
-        navigate("/belts");
-        break;
-      case "bandana":
-        navigate("/bandana");
-        break;
-      case "watches":
-        navigate("/watches");
-        break;
-      case "shades":
-        navigate("/shades");
         break;
       default:
         navigate("/new-arrival");
@@ -79,93 +63,19 @@ const Categories = () => {
             </div>
 
             {/* Accessories Broad Section */}
-            <div className="flex flex-col gap-4">
-              {/* Accessories Header Card */}
-              <div className="relative h-44 sm:h-64 lg:h-72 rounded-xl overflow-hidden group border border-neutral-900">
-                <img
-                  src={accessories}
-                  alt="Accessories"
-                  className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
-                />
-                <div className="absolute bottom-3 left-3 right-3 bg-black/50 backdrop-blur-sm rounded-lg border border-white/5 overflow-hidden">
-                  <button
-                    onClick={() => handleCategoryClick("accessories")}
-                    className="w-full text-center text-neutral-300 text-xs sm:text-lg lg:text-xl font-black tracking-widest py-2.5 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
-                  >
-                    ACCESSORIES
-                  </button>
-                </div>
-              </div>
-
-              {/* Subcategories: Belt, Bandana, Shades, Watches */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                {/* Belts */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 aspect-square">
-                  <img
-                    src={belt}
-                    alt="Belts"
-                    className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
-                  />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
-                    <button
-                      onClick={() => handleCategoryClick("belts")}
-                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
-                    >
-                      BELTS
-                    </button>
-                  </div>
-                </div>
-
-                {/* Bandana */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 aspect-square">
-                  <img
-                    src={chain}
-                    alt="Bandana"
-                    className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
-                  />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
-                    <button
-                      onClick={() => handleCategoryClick("bandana")}
-                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
-                    >
-                      BANDANA
-                    </button>
-                  </div>
-                </div>
-
-                {/* Shades */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 aspect-square">
-                  <img
-                    src={shades}
-                    alt="Shades"
-                    className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
-                  />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
-                    <button
-                      onClick={() => handleCategoryClick("shades")}
-                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
-                    >
-                      SHADES
-                    </button>
-                  </div>
-                </div>
-
-                {/* Watches */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 aspect-square">
-                  <img
-                    src={watch}
-                    alt="Watches"
-                    className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
-                  />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
-                    <button
-                      onClick={() => handleCategoryClick("watches")}
-                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
-                    >
-                      WATCHES
-                    </button>
-                  </div>
-                </div>
+            <div className="relative h-44 sm:h-64 lg:h-72 rounded-xl overflow-hidden group border border-neutral-900">
+              <img
+                src={accessories}
+                alt="Accessories"
+                className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
+              />
+              <div className="absolute bottom-3 left-3 right-3 bg-black/50 backdrop-blur-sm rounded-lg border border-white/5 overflow-hidden">
+                <button
+                  onClick={() => handleCategoryClick("accessories")}
+                  className="w-full text-center text-neutral-300 text-xs sm:text-lg lg:text-xl font-black tracking-widest py-2.5 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                >
+                  ACCESSORIES
+                </button>
               </div>
             </div>
           </div>
