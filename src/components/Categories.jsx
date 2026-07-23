@@ -40,7 +40,7 @@ const Categories = () => {
         navigate("/shades");
         break;
       default:
-        navigate("/products");
+        navigate("/new-arrival");
     }
   };
 
@@ -214,16 +214,13 @@ const Categories = () => {
 
         </div>
 
-        {/* Bottom Call-to-Action Buttons */}
-        <div className="grid grid-cols-2 gap-6 mt-2">
+        {/* Bottom Call-to-Action Button */}
+        <div className="mt-2">
           <button
-            onClick={() => navigate("/products")}
-            className="bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"
+            onClick={() => navigate("/new-arrival")}
+            className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"
           >
-            PRODUCTS
-          </button>
-          <button className="bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer">
-            NEW
+            NEW ARRIVAL
           </button>
         </div>
       </div>

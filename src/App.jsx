@@ -9,8 +9,7 @@ import CartDrawer from "./components/CartDrawer";
 import ProductDetail from "./components/ProductDetail";
 import ProductDetailView from "./components/ProductDetailView"; 
 import Wishlist from "./components/Wishlist"; 
-import More from "./components/More";
-import Footer from "./components/Footer"; // 1. IMPORTED FOOTER
+import Footer from "./components/Footer";
 
 import Tshirt from "./components/Tshirt"; 
 import Shoes from "./components/Shoes";
@@ -20,6 +19,7 @@ import Bandana from "./components/Bandana";
 import Shades from "./components/Shades";
 import Belts from "./components/Belts"; 
 import Watches from "./components/Watches"; 
+import NewArrival from "./components/NewArrival"; 
 
 // A tiny internal behavior hook to instantly scroll the window to coordinates (0,0) on any location changes
 function ScrollToTopSystem() {
@@ -49,7 +49,6 @@ function Home({
         wishlistedIds={wishlistedIds}
         setWishlistedIds={setWishlistedIds}
       />
-      <More />
     </div>
   );
 }
@@ -129,6 +128,19 @@ function App() {
                   setCartItems={setCartItems}
                 />
               } 
+            />
+
+            {/* NEW ARRIVAL VIEW */}
+            <Route
+              path="/new-arrival"
+              element={
+                <NewArrival
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  wishlistedIds={wishlistedIds}
+                  setWishlistedIds={setWishlistedIds}
+                />
+              }
             />
 
             {/* Dedicated Catalogue View Routes */}
