@@ -29,7 +29,7 @@ const Categories = () => {
   };
 
   return (
-    <section className="bg-[#0f0f0f] py-10 px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col justify-center">
+    <section className="bg-[#0f0f0f] py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
       <div className="max-w-7xl w-full mx-auto flex flex-col gap-6">
 
         {/* Main Grid Layout */}
@@ -115,7 +115,7 @@ const Categories = () => {
         </div>
 
         {/* Bottom Call-to-Action Buttons */}
-        <div className="mt-2 grid grid-cols-2 gap-4" data-aos="fade-up" data-aos-delay="500">
+        <div className="mt-6 mb-2 grid grid-cols-2 gap-4" data-aos="fade-up" data-aos-delay="500">
           <button
             onClick={() => navigate("/products")}
             className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"
