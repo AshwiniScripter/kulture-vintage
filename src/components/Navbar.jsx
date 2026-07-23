@@ -1,7 +1,15 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
-import { IoSearchOutline, IoHeartOutline, IoClose } from "react-icons/io5";
+import {
+  IoSearchOutline,
+  IoHeartOutline,
+  IoClose,
+  IoPersonOutline,
+  IoMenu,
+  IoHomeOutline,
+  IoSparklesOutline,
+} from "react-icons/io5";
 import logo from "../assets/logo.png";
 import dummyImage from "../assets/dummyImage.jpeg";
 
@@ -40,6 +48,9 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const profileRef = useRef(null);
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
@@ -57,6 +68,16 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
     setQuery("");
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
       <nav className="absolute top-0 left-0 w-full z-150 bg-transparent">
@@ -65,7 +86,8 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <img src={logo} alt="Logo" className="w-16 md:w-20 cursor-pointer" />
           </Link>
 
-          <div className="flex items-center gap-5">
+          {/* Desktop Icons */}
+          <div className="hidden md:flex items-center gap-5">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
@@ -99,9 +121,125 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
                 </span>
               )}
             </button>
+
+            {/* Profile Icon */}
+            <div className="relative" ref={profileRef}>
+              <button
+                type="button"
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="text-white hover:text-red-600 transition cursor-pointer"
+              >
+                <IoPersonOutline className="text-4xl" />
+              </button>
+
+              {profileOpen && (
+                <div className="absolute right-0 top-full mt-3 w-56 bg-[#141414] border border-neutral-900 rounded-2xl shadow-2xl overflow-hidden">
+                  <div className="p-4 border-b border-neutral-900">
+                    <p className="text-xs font-mono font-bold tracking-widest text-neutral-500 uppercase">Account</p>
+                  </div>
+                  <button
+                    onClick={() => { navigate("/profile"); setProfileOpen(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-neutral-900 transition cursor-pointer text-left"
+                  >
+                    <IoPersonOutline className="text-base text-neutral-400" />
+                    <span className="text-xs font-mono font-bold tracking-wider text-neutral-200 uppercase">My Profile</span>
+                  </button>
+                  <button
+                    onClick={() => { navigate("/wishlist"); setProfileOpen(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-neutral-900 transition cursor-pointer text-left border-t border-neutral-900"
+                  >
+                    <IoHeartOutline className="text-base text-neutral-400" />
+                    <span className="text-xs font-mono font-bold tracking-wider text-neutral-200 uppercase">Wishlist</span>
+                  </button>
+                  <button
+                    onClick={() => { onCartClick(); setProfileOpen(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-neutral-900 transition cursor-pointer text-left border-t border-neutral-900"
+                  >
+                    <HiOutlineShoppingCart className="text-base text-neutral-400" />
+                    <span className="text-xs font-mono font-bold tracking-wider text-neutral-200 uppercase">Cart</span>
+                  </button>
+                  <button
+                    onClick={() => { navigate("/new-arrival"); setProfileOpen(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-neutral-900 transition cursor-pointer text-left border-t border-neutral-900"
+                  >
+                    <IoSparklesOutline className="text-base text-neutral-400" />
+                    <span className="text-xs font-mono font-bold tracking-wider text-neutral-200 uppercase">New Arrival</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-white hover:text-red-600 transition cursor-pointer"
+          >
+            {mobileMenuOpen ? (
+              <IoClose className="text-4xl" />
+            ) : (
+              <IoMenu className="text-4xl" />
+            )}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Dropdown Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-x-0 top-0 z-[140] pt-24 px-4 md:hidden">
+          <div className="bg-[#141414] border border-neutral-900 rounded-2xl shadow-2xl overflow-hidden mx-2">
+            <button
+              onClick={() => { setSearchOpen(true); setMobileMenuOpen(false); }}
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-neutral-900 transition cursor-pointer text-left border-b border-neutral-900"
+            >
+              <IoSearchOutline className="text-xl text-neutral-400" />
+              <span className="text-sm font-mono font-bold tracking-wider text-neutral-200 uppercase">Search</span>
+            </button>
+            <button
+              onClick={() => { navigate("/"); setMobileMenuOpen(false); }}
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-neutral-900 transition cursor-pointer text-left border-b border-neutral-900"
+            >
+              <IoHomeOutline className="text-xl text-neutral-400" />
+              <span className="text-sm font-mono font-bold tracking-wider text-neutral-200 uppercase">Home</span>
+            </button>
+            <button
+              onClick={() => { navigate("/new-arrival"); setMobileMenuOpen(false); }}
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-neutral-900 transition cursor-pointer text-left border-b border-neutral-900"
+            >
+              <IoSparklesOutline className="text-xl text-neutral-400" />
+              <span className="text-sm font-mono font-bold tracking-wider text-neutral-200 uppercase">New Arrival</span>
+            </button>
+            <button
+              onClick={() => { navigate("/wishlist"); setMobileMenuOpen(false); }}
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-neutral-900 transition cursor-pointer text-left border-b border-neutral-900"
+            >
+              <IoHeartOutline className="text-xl text-neutral-400" />
+              <span className="text-sm font-mono font-bold tracking-wider text-neutral-200 uppercase">Wishlist</span>
+              {wishlistCount > 0 && (
+                <span className="ml-auto bg-red-600 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-full">{wishlistCount}</span>
+              )}
+            </button>
+            <button
+              onClick={() => { onCartClick(); setMobileMenuOpen(false); }}
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-neutral-900 transition cursor-pointer text-left border-b border-neutral-900"
+            >
+              <HiOutlineShoppingCart className="text-xl text-neutral-400" />
+              <span className="text-sm font-mono font-bold tracking-wider text-neutral-200 uppercase">Cart</span>
+              {cartCount > 0 && (
+                <span className="ml-auto bg-red-600 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-full">{cartCount}</span>
+              )}
+            </button>
+            <button
+              onClick={() => { navigate("/profile"); setMobileMenuOpen(false); }}
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-neutral-900 transition cursor-pointer text-left"
+            >
+              <IoPersonOutline className="text-xl text-neutral-400" />
+              <span className="text-sm font-mono font-bold tracking-wider text-neutral-200 uppercase">Profile</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Search Overlay */}
       {searchOpen && (

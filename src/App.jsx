@@ -19,7 +19,8 @@ import Bandana from "./components/Bandana";
 import Shades from "./components/Shades";
 import Belts from "./components/Belts"; 
 import Watches from "./components/Watches"; 
-import NewArrival from "./components/NewArrival"; 
+import NewArrival from "./components/NewArrival";
+import Profile from "./components/Profile"; 
 
 // A tiny internal behavior hook to instantly scroll the window to coordinates (0,0) on any location changes
 function ScrollToTopSystem() {
@@ -142,6 +143,9 @@ function App() {
                 />
               }
             />
+
+            {/* PROFILE VIEW */}
+            <Route path="/profile" element={<Profile />} />
 
             {/* Dedicated Catalogue View Routes */}
             <Route
