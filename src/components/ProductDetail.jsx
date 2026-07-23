@@ -26,7 +26,7 @@ const ProductDetail = ({
     <div className="bg-[#0f0f0f] pt-24 pb-24">
 
       {/* Embedded Categories Component Wrapper */}
-      <section className="bg-[#0f0f0f] py-10 px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col justify-center">
+      <section className="bg-[#0f0f0f] py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
         <div className="max-w-7xl w-full mx-auto flex flex-col gap-6">
       
           {/* Heading */}
