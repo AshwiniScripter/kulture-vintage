@@ -13,10 +13,10 @@ const COLOR_HEX_MAP = {
 
 const ProductCategory = ({ 
   title, 
-  products, 
-  cartItems, 
+  products = [], 
+  cartItems = [], 
   setCartItems, 
-  wishlistedIds, 
+  wishlistedIds = [], 
   setWishlistedIds 
 }) => {
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ const ProductCategory = ({
     } else if (sortBy === 'price-high') {
       result.sort((a, b) => (b.priceNum || 0) - (a.priceNum || 0));
     } else if (sortBy === 'name-az') {
-      result.sort((a, b) => a.title.localeCompare(b.title));
+      result.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
     }
 
     return result;
@@ -159,28 +159,38 @@ const ProductCategory = ({
         )}
       </div>
 
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between gap-3">
-        <button 
-          onClick={() => navigate(-1)}
-          className="bg-black/80 border border-neutral-900 p-3.5 rounded-xl hover:bg-neutral-900 text-neutral-300 transition duration-300 cursor-pointer active:scale-95 shrink-0"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/></svg>
-        </button>
-        <div className="bg-black/80 border border-neutral-900 flex-1 rounded-xl py-3.5 flex justify-center items-center shadow-md">
-          <h1 className="text-2xl md:text-3xl font-mono font-black tracking-widest text-neutral-300 uppercase">{title}</h1>
+      {/* Navigation & Title Header Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        {/* Navigation Action Toolbar */}
+        <div className="flex items-center justify-between mb-3">
+          <button 
+            onClick={() => navigate(-1)}
+            className="bg-black/80 border border-neutral-900 p-2.5 sm:p-3 rounded-xl hover:bg-neutral-900 text-neutral-300 transition duration-300 cursor-pointer active:scale-95 shrink-0 flex items-center gap-2 text-xs font-mono"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span className="hidden sm:inline">BACK</span>
+          </button>
+
+          <button 
+            onClick={() => setFilterOpen(!filterOpen)}
+            className={`bg-black/80 border p-2.5 sm:p-3 rounded-xl transition duration-300 cursor-pointer active:scale-95 relative shrink-0 flex items-center gap-2 text-xs font-mono ${filterOpen ? 'border-red-600 text-white' : 'border-neutral-900 hover:bg-neutral-900 text-neutral-300'}`}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M3 12h18M3 20h18M7 2v4M17 10v4M11 18v4" /></svg>
+            <span>FILTERS</span>
+            {activeFilterCount > 0 && (
+              <span className="ml-1 w-5 h-5 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
         </div>
-        <button 
-          onClick={() => setFilterOpen(!filterOpen)}
-          className={`bg-black/80 border p-3.5 rounded-xl transition duration-300 cursor-pointer active:scale-95 relative shrink-0 ${filterOpen ? 'border-red-600 text-neutral-300' : 'border-neutral-900 hover:bg-neutral-900 text-neutral-300'}`}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M3 12h18M3 20h18M7 2v4M17 10v4M11 18v4" /></svg>
-          {activeFilterCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-              {activeFilterCount}
-            </span>
-          )}
-        </button>
+
+        {/* Full-Width Section Header Banner (Matches NEW ARRIVAL layout) */}
+        <div className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 flex items-center justify-center shadow-xl">
+          <h1 className="text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest uppercase text-center">
+            {title}
+          </h1>
+        </div>
       </div>
 
       {/* Filter Panel */}
