@@ -127,7 +127,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-neutral-600 gap-4">
         <p>© {new Date().getFullYear()} MAKETECHBERRY. ALL RIGHTS RESERVED.</p>
         <p className="tracking-widest uppercase">
-          DESIGNED FOR <span className="text-neutral-400 font-bold">MakeTechBerry LLP</span>
+          DESIGNED FOR <span className="text-neutral-400 font-bold">Kulture Vintage</span>
         </p>
       </div>
 
