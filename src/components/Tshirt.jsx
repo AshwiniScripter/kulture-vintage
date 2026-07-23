@@ -223,18 +223,18 @@ const Tshirt = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between gap-3">
         <button 
           onClick={() => navigate(-1)}
-          className="bg-black/80 border border-neutral-900 p-3.5 rounded-xl hover:bg-neutral-900 text-red-600 transition duration-300 cursor-pointer active:scale-95 shrink-0"
+          className="bg-black/80 border border-neutral-900 p-3.5 rounded-xl hover:bg-neutral-900 text-neutral-300 transition duration-300 cursor-pointer active:scale-95 shrink-0"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/></svg>
         </button>
         <div className="bg-black/80 border border-neutral-900 flex-1 rounded-xl py-3.5 flex justify-center items-center shadow-md">
-          <h1 className="text-2xl md:text-3xl font-mono font-black tracking-widest text-red-600 uppercase">
+          <h1 className="text-2xl md:text-3xl font-mono font-black tracking-widest text-neutral-300 uppercase">
             T SHIRTS
           </h1>
         </div>
         <button 
           onClick={() => setFilterOpen(!filterOpen)}
-          className={`bg-black/80 border p-3.5 rounded-xl transition duration-300 cursor-pointer active:scale-95 relative shrink-0 ${filterOpen ? 'border-red-600 text-red-600' : 'border-neutral-900 hover:bg-neutral-900 text-red-600'}`}
+          className={`bg-black/80 border p-3.5 rounded-xl transition duration-300 cursor-pointer active:scale-95 relative shrink-0 ${filterOpen ? 'border-neutral-500 text-neutral-300' : 'border-neutral-900 hover:bg-neutral-900 text-neutral-300'}`}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M3 12h18M3 20h18M7 2v4M17 10v4M11 18v4" />
