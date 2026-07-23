@@ -31,7 +31,7 @@ const ProductDetail = ({
       
           {/* Heading */}
           <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50">
-            <h1 className="text-center text-red-600 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-red-600 selection:text-white">
+            <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
               CATEGORY
             </h1>
           </div>
@@ -52,7 +52,7 @@ const ProductDetail = ({
                   className="w-full h-full object-cover group-hover:scale-105 duration-500 ease-out transition-transform"
                 />
                 <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl py-4 border border-white/10 shadow-2xl">
-                  <h2 className="text-center text-red-600 text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider transition-colors duration-300 group-hover:text-red-500">
+                  <h2 className="text-center text-neutral-300 text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider transition-colors duration-300 group-hover:text-neutral-400">
                     UPPER WARE
                   </h2>
                 </div>
@@ -72,7 +72,7 @@ const ProductDetail = ({
                     className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                   />
                   <div className="absolute bottom-3 left-2 right-2 bg-black/50 backdrop-blur-sm rounded-lg py-2 border border-white/5">
-                    <p className="text-center text-red-600 text-xs sm:text-sm lg:text-base font-black tracking-widest">
+                    <p className="text-center text-neutral-300 text-xs sm:text-sm lg:text-base font-black tracking-widest">
                       ACCESSORIES
                     </p>
                   </div>
@@ -92,7 +92,7 @@ const ProductDetail = ({
                       className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                     />
                     <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded py-1 border border-white/5">
-                      <p className="text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
+                      <p className="text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
                         BELTS
                       </p>
                     </div>
@@ -109,7 +109,7 @@ const ProductDetail = ({
                       className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                     />
                     <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded py-1 border border-white/5">
-                      <p className="text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
+                      <p className="text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
                         BANDANA
                       </p>
                     </div>
@@ -126,7 +126,7 @@ const ProductDetail = ({
                       className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                     />
                     <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded py-1 border border-white/5">
-                      <p className="text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
+                      <p className="text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
                         WATCHES
                       </p>
                     </div>
@@ -143,7 +143,7 @@ const ProductDetail = ({
                       className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                     />
                     <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded py-1 border border-white/5">
-                      <p className="text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
+                      <p className="text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider">
                         SHADES
                       </p>
                     </div>
@@ -169,7 +169,7 @@ const ProductDetail = ({
                   className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                 />
                 <div className="absolute bottom-3 left-3 right-3 bg-black/40 backdrop-blur-sm rounded-lg py-2.5 border border-white/5">
-                  <h3 className="text-center text-red-600 text-sm sm:text-lg lg:text-xl font-black tracking-widest">
+                  <h3 className="text-center text-neutral-300 text-sm sm:text-lg lg:text-xl font-black tracking-widest">
                     SHOES
                   </h3>
                 </div>
@@ -186,7 +186,7 @@ const ProductDetail = ({
                   className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                 />
                 <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl py-3 border border-white/10">
-                  <h2 className="text-center text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-wider">
+                  <h2 className="text-center text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-wider">
                     LOWER WARE
                   </h2>
                 </div>
@@ -200,7 +200,7 @@ const ProductDetail = ({
       </section>
 
       <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50">
-        <h1 className="text-center text-red-600 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-red-600 selection:text-white">
+        <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
           ALL PRODUCTS
         </h1>
       </div>

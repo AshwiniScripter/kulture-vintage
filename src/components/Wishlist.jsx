@@ -62,7 +62,7 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
       
       {/* 1. Safely Spaced Section Title (Prevents collisions with fixed headers) */}
       <div className="w-full text-center py-6 mb-2 max-w-6xl mx-auto">
-        <h1 className="text-base sm:text-xl font-black tracking-[0.3em] text-red-600 uppercase">
+        <h1 className="text-base sm:text-xl font-black tracking-[0.3em] text-neutral-300 uppercase">
           WISHLIST
         </h1>
       </div>
@@ -101,7 +101,7 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
                     )}
                     <button 
                       onClick={() => removeFromWishlist(currentId)} 
-                      className="absolute top-2 right-2 bg-black/60 backdrop-blur-md p-1.5 sm:p-2 rounded-full text-red-500 transition hover:scale-105"
+                      className="absolute top-2 right-2 bg-black/60 backdrop-blur-md p-1.5 sm:p-2 rounded-full text-neutral-400 transition hover:scale-105"
                     >
                       <IoHeart className="text-xs sm:text-sm" />
                     </button>
@@ -116,7 +116,7 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
                       <p className="text-[10px] text-neutral-600 tracking-wide mt-0.5">
                         {product.color || 'Black'} . {product.size || 'XL'}
                       </p>
-                      <p className="text-red-600 font-bold text-sm sm:text-base mt-2 tracking-wide">
+                      <p className="text-neutral-300 font-bold text-sm sm:text-base mt-2 tracking-wide">
                         {typeof product.price === 'number' ? `₹${product.price.toLocaleString('en-IN')}` : product.price}
                       </p>
                       <p className="text-[10px] text-neutral-500 tracking-wider mt-0.5">
@@ -149,7 +149,7 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
             <div className="border border-[#141414] bg-[#090909] rounded-xl p-3 flex-1 sm:flex-initial flex items-center justify-between sm:gap-12 text-xs font-bold text-neutral-300 tracking-[0.15em]">
               <div className="flex items-center gap-2.5">
                 <div className="w-7 h-7 rounded-full bg-[#0e0e0e] flex items-center justify-center border border-[#181818]">
-                  <IoHeart className="text-xs text-red-500" />
+                  <IoHeart className="text-xs text-neutral-400" />
                 </div>
                 <span>{wishlistedProducts.length} ITEMS</span>
               </div>

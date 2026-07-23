@@ -89,7 +89,7 @@ const ProductGrid = ({
             wishlistAlert.status === 'added' ? 'border-red-600/50' : 'border-neutral-800'
           }`}>
             <div className={`p-2 rounded-lg ${wishlistAlert.status === 'added' ? 'bg-red-600/20' : 'bg-neutral-800'}`}>
-              <svg className={`w-5 h-5 ${wishlistAlert.status === 'added' ? 'text-red-600 fill-current' : 'text-neutral-400'}`} viewBox="0 0 24 24" fill={wishlistAlert.status === 'added' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+              <svg className={`w-5 h-5 ${wishlistAlert.status === 'added' ? 'text-neutral-300 fill-current' : 'text-neutral-400'}`} viewBox="0 0 24 24" fill={wishlistAlert.status === 'added' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
                 <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
               </svg>
             </div>
@@ -146,7 +146,7 @@ const ProductGrid = ({
                   }}
                   className="absolute top-3 right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-black/70 transition-all z-10"
                 >
-                  <svg className={`w-4 h-4 transition-colors duration-300 ${isWishlisted ? 'text-red-600 fill-current scale-110' : 'text-white'}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 transition-colors duration-300 ${isWishlisted ? 'text-neutral-300 fill-current scale-110' : 'text-white'}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                   </svg>
                 </button>

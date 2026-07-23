@@ -60,7 +60,7 @@ const CartDrawer = ({ isOpen, onClose, cartItems, setCartItems }) => {
                   <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <div>
                       <h4 className="font-mono text-xs font-bold uppercase truncate tracking-wider text-neutral-200">{item.title}</h4>
-                      <p className="text-sm font-bold mt-1 text-red-500">{item.price}</p>
+                      <p className="text-sm font-bold mt-1 text-neutral-400">{item.price}</p>
                     </div>
 
                     {/* Counter Adjustments block */}
@@ -71,7 +71,7 @@ const CartDrawer = ({ isOpen, onClose, cartItems, setCartItems }) => {
                         <button onClick={() => updateQuantity(item.id, 1)} className="px-2 py-0.5 hover:bg-neutral-800 text-neutral-400 hover:text-white transition font-bold">+</button>
                       </div>
                       
-                      <button onClick={() => removeItem(item.id)} className="text-neutral-500 hover:text-red-500 transition p-1">
+                      <button onClick={() => removeItem(item.id)} className="text-neutral-500 hover:text-neutral-400 transition p-1">
                         <IoTrashOutline className="text-base" />
                       </button>
                     </div>

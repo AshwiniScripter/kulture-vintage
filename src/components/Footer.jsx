@@ -19,7 +19,7 @@ const Footer = () => {
       {/* 1. TOP BRANDING & SCROLL CONTROL BAR */}
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between border-b border-[#181818] pb-10 gap-6">
         <div>
-          <span className="text-[10px] text-red-600 font-bold tracking-[0.3em] uppercase block mb-1">
+          <span className="text-[10px] text-neutral-300 font-bold tracking-[0.3em] uppercase block mb-1">
             // OFFICIAL ARCHIVE
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-white tracking-widest uppercase">
@@ -45,7 +45,7 @@ const Footer = () => {
           </h3>
           
           <div className="flex items-start gap-3 bg-[#0d0d0d] border border-[#1c1c1c] p-4 rounded-xl">
-            <IoLocationOutline className="text-red-600 text-xl shrink-0 mt-0.5" />
+            <IoLocationOutline className="text-neutral-300 text-xl shrink-0 mt-0.5" />
             <div className="text-xs text-neutral-300 leading-relaxed">
               <p className="font-bold text-white mb-1">Amba Complex</p>
               <p>Shop No. 28, 9 MG Road, Camp,</p>
@@ -54,12 +54,12 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center gap-3 bg-[#0d0d0d] border border-[#1c1c1c] p-4 rounded-xl">
-            <IoCallOutline className="text-red-600 text-xl shrink-0" />
+            <IoCallOutline className="text-neutral-300 text-xl shrink-0" />
             <div className="text-xs">
               <span className="text-neutral-500 block text-[10px] tracking-widest uppercase">DIRECT LINE</span>
               <a 
                 href="tel:+918329137605" 
-                className="text-white font-bold tracking-wider hover:text-red-500 transition"
+                className="text-white font-bold tracking-wider hover:text-neutral-400 transition"
               >
                 +91 832-9137605
               </a>
@@ -87,7 +87,7 @@ const Footer = () => {
                   to={cat.path} 
                   className="hover:text-white transition flex items-center gap-1.5 group"
                 >
-                  <IoArrowForward className="text-[10px] text-neutral-600 group-hover:text-red-600 transition" />
+                  <IoArrowForward className="text-[10px] text-neutral-600 group-hover:text-neutral-300 transition" />
                   {cat.label}
                 </Link>
               </li>
@@ -111,7 +111,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-linear-to-r from-neutral-900 to-[#121212] border border-[#222] hover:border-red-600/50 p-4 rounded-xl text-xs text-white font-bold transition group w-full"
           >
-            <div className="p-2 rounded-lg bg-red-600/10 text-red-500 group-hover:bg-red-600 group-hover:text-white transition">
+            <div className="p-2 rounded-lg bg-red-600/10 text-neutral-400 group-hover:bg-red-600 group-hover:text-white transition">
               <IoLogoInstagram className="text-lg" />
             </div>
             <div className="min-w-0 flex-1">

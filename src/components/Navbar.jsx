@@ -79,7 +79,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="text-white hover:text-red-600 transition cursor-pointer"
+              className="text-white hover:text-neutral-300 transition cursor-pointer"
             >
               <IoSearchOutline className="text-4xl" />
             </button>
@@ -87,7 +87,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <button
               type="button"
               onClick={() => navigate("/wishlist")}
-              className="relative text-white hover:text-red-600 transition cursor-pointer"
+              className="relative text-white hover:text-neutral-300 transition cursor-pointer"
             >
               <IoHeartOutline className="text-4xl" />
               {wishlistCount > 0 && (
@@ -100,7 +100,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <button
               type="button"
               onClick={onCartClick}
-              className="relative text-white hover:text-red-600 transition cursor-pointer"
+              className="relative text-white hover:text-neutral-300 transition cursor-pointer"
             >
               <HiOutlineShoppingCart className="text-4xl" />
               {cartCount > 0 && (
@@ -114,7 +114,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <button
               type="button"
               onClick={() => navigate("/profile")}
-              className="text-white hover:text-red-600 transition cursor-pointer"
+              className="text-white hover:text-neutral-300 transition cursor-pointer"
             >
               <IoPersonOutline className="text-4xl" />
             </button>
@@ -124,7 +124,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white hover:text-red-600 transition cursor-pointer"
+            className="md:hidden text-white hover:text-neutral-300 transition cursor-pointer"
           >
             {mobileMenuOpen ? (
               <IoClose className="text-4xl" />
@@ -255,7 +255,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
                         {product.category}
                       </p>
                     </div>
-                    <p className="text-sm font-mono font-black text-red-600 shrink-0">
+                    <p className="text-sm font-mono font-black text-neutral-300 shrink-0">
                       ₹{product.price}
                     </p>
                   </button>

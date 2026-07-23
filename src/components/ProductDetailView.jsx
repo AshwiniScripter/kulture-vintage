@@ -91,7 +91,7 @@ const ProductDetailView = ({ wishlistedIds = [], setWishlistedIds, cartItems = [
             {/* Wishlist floating toggle overlay */}
             <button 
               onClick={toggleWishlist} 
-              className="absolute top-6 right-6 bg-black/70 backdrop-blur-md p-3.5 rounded-full text-red-500 border border-white/5 transition hover:scale-110"
+              className="absolute top-6 right-6 bg-black/70 backdrop-blur-md p-3.5 rounded-full text-neutral-400 border border-white/5 transition hover:scale-110"
             >
               {isWishlisted ? <IoHeart className="text-base" /> : <IoHeartOutline className="text-white text-base" />}
             </button>
@@ -134,7 +134,7 @@ const ProductDetailView = ({ wishlistedIds = [], setWishlistedIds, cartItems = [
           {/* Module: Commercial Pricing and Checkouts */}
           <div className="border border-[#141414] bg-[#0a0a0a] rounded-xl p-6 flex flex-row items-center justify-between gap-6 shadow-xl">
             <div>
-              <span className="text-red-600 font-black text-2xl block tracking-wide">
+              <span className="text-neutral-300 font-black text-2xl block tracking-wide">
                 ₹{productData.price.toLocaleString('en-IN')}
               </span>
               <span className="text-[10px] text-neutral-500 tracking-[0.2em] block font-bold uppercase mt-0.5">
@@ -262,7 +262,7 @@ const ProductDetailView = ({ wishlistedIds = [], setWishlistedIds, cartItems = [
               <p className="text-[10px] text-neutral-300 font-bold tracking-wider uppercase truncate group-hover:text-white transition">
                 BASEBALL CAP - RED
               </p>
-              <p className="text-xs text-red-600 font-black mt-1">₹1,999</p>
+              <p className="text-xs text-neutral-300 font-black mt-1">₹1,999</p>
             </div>
           ))}
         </div>

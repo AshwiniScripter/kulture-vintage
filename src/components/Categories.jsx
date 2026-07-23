@@ -50,7 +50,7 @@ const Categories = () => {
 
         {/* Heading */}
         <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50">
-          <h1 className="text-center text-red-600 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-red-600 selection:text-white">
+          <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
             CATEGORY
           </h1>
         </div>
@@ -71,7 +71,7 @@ const Categories = () => {
               <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl p-0 overflow-hidden">
                 <button
                   onClick={() => handleCategoryClick("tshirts")}
-                  className="w-full text-center text-red-600 text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider py-4 transition-colors duration-300 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                  className="w-full text-center text-neutral-300 text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider py-4 transition-colors duration-300 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                 >
                   UPPER WEAR
                 </button>
@@ -91,7 +91,7 @@ const Categories = () => {
                 <div className="absolute bottom-3 left-2 right-2 bg-black/50 backdrop-blur-sm rounded-lg border border-white/5 overflow-hidden">
                   <button
                     onClick={() => handleCategoryClick("accessories")}
-                    className="w-full text-center text-red-600 text-xs sm:text-sm lg:text-base font-black tracking-widest py-2 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                    className="w-full text-center text-neutral-300 text-xs sm:text-sm lg:text-base font-black tracking-widest py-2 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                   >
                     ACCESSORIES
                   </button>
@@ -111,7 +111,7 @@ const Categories = () => {
                   <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
                     <button
                       onClick={() => handleCategoryClick("belts")}
-                      className="w-full text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                     >
                       BELTS
                     </button>
@@ -128,7 +128,7 @@ const Categories = () => {
                   <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
                     <button
                       onClick={() => handleCategoryClick("bandana")}
-                      className="w-full text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                     >
                       BANDANA
                     </button>
@@ -145,7 +145,7 @@ const Categories = () => {
                   <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
                     <button
                       onClick={() => handleCategoryClick("watches")}
-                      className="w-full text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                     >
                       WATCHES
                     </button>
@@ -162,7 +162,7 @@ const Categories = () => {
                   <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
                     <button
                       onClick={() => handleCategoryClick("shades")}
-                      className="w-full text-center text-red-600 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                     >
                       SHADES
                     </button>
@@ -186,7 +186,7 @@ const Categories = () => {
               <div className="absolute bottom-3 left-3 right-3 bg-black/40 backdrop-blur-sm rounded-lg border border-white/5 overflow-hidden">
                 <button
                   onClick={() => handleCategoryClick("shoes")}
-                  className="w-full text-center text-red-600 text-sm sm:text-lg lg:text-xl font-black tracking-widest py-2.5 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                  className="w-full text-center text-neutral-300 text-sm sm:text-lg lg:text-xl font-black tracking-widest py-2.5 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                 >
                   SHOES
                 </button>
@@ -203,7 +203,7 @@ const Categories = () => {
               <div className="absolute bottom-5 left-5 right-5 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden">
                 <button
                   onClick={() => handleCategoryClick("pants")}
-                  className="w-full text-center text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-wider py-3 hover:text-red-500 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                  className="w-full text-center text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-wider py-3 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                 >
                   BOTTOM WEAR
                 </button>
@@ -218,7 +218,7 @@ const Categories = () => {
         <div className="mt-2">
           <button
             onClick={() => navigate("/new-arrival")}
-            className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-red-600 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"
+            className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"
           >
             NEW ARRIVAL
           </button>
