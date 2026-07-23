@@ -78,31 +78,29 @@ const Categories = () => {
               </div>
             </div>
 
-            {/* Sub-Section Layout: Accessories on Left + 2x2 Grid on Right */}
-            <div className="grid grid-cols-3 gap-4">
-
-              {/* Column 1: Accessories Card */}
+            {/* Accessories Broad Section */}
+            <div className="flex flex-col gap-4">
+              {/* Accessories Header Card */}
               <div className="relative h-44 sm:h-64 lg:h-72 rounded-xl overflow-hidden group border border-neutral-900">
                 <img
                   src={accessories}
                   alt="Accessories"
                   className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
                 />
-                <div className="absolute bottom-3 left-2 right-2 bg-black/50 backdrop-blur-sm rounded-lg border border-white/5 overflow-hidden">
+                <div className="absolute bottom-3 left-3 right-3 bg-black/50 backdrop-blur-sm rounded-lg border border-white/5 overflow-hidden">
                   <button
                     onClick={() => handleCategoryClick("accessories")}
-                    className="w-full text-center text-neutral-300 text-xs sm:text-sm lg:text-base font-black tracking-widest py-2 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                    className="w-full text-center text-neutral-300 text-xs sm:text-lg lg:text-xl font-black tracking-widest py-2.5 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
                   >
                     ACCESSORIES
                   </button>
                 </div>
               </div>
 
-              {/* Columns 2 & 3: 2x2 Nested Grid Area */}
-              <div className="col-span-2 grid grid-cols-2 gap-4 h-44 sm:h-64 lg:h-72">
-                
+              {/* Subcategories: Belt, Bandana, Shades, Watches */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 {/* Belts */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900">
+                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 aspect-square">
                   <img
                     src={belt}
                     alt="Belts"
@@ -119,7 +117,7 @@ const Categories = () => {
                 </div>
 
                 {/* Bandana */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900">
+                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 aspect-square">
                   <img
                     src={chain}
                     alt="Bandana"
@@ -135,25 +133,8 @@ const Categories = () => {
                   </div>
                 </div>
 
-                {/* Watches */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900">
-                  <img
-                    src={watch}
-                    alt="Watches"
-                    className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
-                  />
-                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
-                    <button
-                      onClick={() => handleCategoryClick("watches")}
-                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
-                    >
-                      WATCHES
-                    </button>
-                  </div>
-                </div>
-
                 {/* Shades */}
-                <div className="relative rounded-xl overflow-hidden group border border-neutral-900">
+                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 aspect-square">
                   <img
                     src={shades}
                     alt="Shades"
@@ -169,6 +150,22 @@ const Categories = () => {
                   </div>
                 </div>
 
+                {/* Watches */}
+                <div className="relative rounded-xl overflow-hidden group border border-neutral-900 aspect-square">
+                  <img
+                    src={watch}
+                    alt="Watches"
+                    className="w-full h-full object-cover group-hover:scale-105 duration-500 transition-transform"
+                  />
+                  <div className="absolute bottom-2 left-1 right-1 bg-black/50 backdrop-blur-sm rounded border border-white/5 overflow-hidden">
+                    <button
+                      onClick={() => handleCategoryClick("watches")}
+                      className="w-full text-center text-neutral-300 text-[10px] sm:text-xs lg:text-sm font-black tracking-wider py-1 hover:text-neutral-400 hover:bg-white/5 active:bg-white/10 cursor-pointer block"
+                    >
+                      WATCHES
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
