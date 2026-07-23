@@ -132,7 +132,7 @@ const ProductCategory = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] pt-24 pb-24 text-white">
+    <div className="bg-[#0f0f0f] pt-24 pb-24 text-white">
       {/* Toast Overlay Stack */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full px-4 sm:px-0">
         {wishlistAlert && (

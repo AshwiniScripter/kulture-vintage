@@ -16,7 +16,7 @@ const Accessories = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="bg-[#0f0f0f] pt-24 pb-10 px-4 sm:px-6 lg:px-8 min-h-screen">
+    <section className="bg-[#0f0f0f] pt-24 pb-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto flex flex-col gap-6">
 
         {/* Header */}
