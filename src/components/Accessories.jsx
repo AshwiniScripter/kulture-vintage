@@ -22,7 +22,7 @@ const Accessories = () => {
         {/* Header */}
         <div className="flex items-center gap-3">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/categories")}
             className="bg-black/80 border border-neutral-900 p-3.5 rounded-xl hover:bg-neutral-900 text-neutral-300 transition duration-300 cursor-pointer active:scale-95 shrink-0"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/></svg>
