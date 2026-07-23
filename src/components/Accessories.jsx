@@ -37,10 +37,12 @@ const Accessories = () => {
 
         {/* Subcategories Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {subcategories.map((sub) => (
+          {subcategories.map((sub, idx) => (
             <div
               key={sub.name}
               onClick={() => navigate(sub.path)}
+              data-aos="fade-up"
+              data-aos-delay={idx * 100}
               className="relative h-48 sm:h-64 lg:h-80 rounded-2xl overflow-hidden group border border-neutral-900 cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300"
             >
               <img

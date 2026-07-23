@@ -3,7 +3,7 @@ import hero from "../assets/hero.png";
 
 const Hero = () => {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section className="relative w-full h-screen overflow-hidden" data-aos="fade-up">
       {/* Navbar REMOVED from here to fix duplicate layering */}
       
       <img

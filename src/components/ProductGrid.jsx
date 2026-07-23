@@ -131,6 +131,8 @@ const ProductGrid = ({
                     navigate(`/product/${product.id}`);
                   }
                 }}
+                data-aos="fade-up"
+                data-aos-delay={product.id * 100}
                 className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] cursor-pointer transition-all duration-500 ${product.gridClass}`}
               >
                 <img 

@@ -33,7 +33,7 @@ const Categories = () => {
       <div className="max-w-7xl w-full mx-auto flex flex-col gap-6">
 
         {/* Heading */}
-        <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50">
+        <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50" data-aos="fade-up">
           <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
             CATEGORY
           </h1>
@@ -46,7 +46,7 @@ const Categories = () => {
           <div className="lg:col-span-2 flex flex-col gap-6">
 
             {/* Tshirt Card */}
-            <div className="relative h-80 sm:h-112.5 lg:h-125 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg">
+            <div className="relative h-80 sm:h-112.5 lg:h-125 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg" data-aos="fade-up" data-aos-delay="100">
               <img
                 src={tshirt}
                 alt="T-Shirts"
@@ -63,7 +63,7 @@ const Categories = () => {
             </div>
 
             {/* Accessories Broad Section */}
-            <div className="relative h-44 sm:h-64 lg:h-72 rounded-xl overflow-hidden group border border-neutral-900">
+            <div className="relative h-44 sm:h-64 lg:h-72 rounded-xl overflow-hidden group border border-neutral-900" data-aos="fade-up" data-aos-delay="200">
               <img
                 src={accessories}
                 alt="Accessories"
@@ -84,7 +84,7 @@ const Categories = () => {
           <div className="flex flex-col gap-6">
 
             {/* Shoes Card */}
-            <div className="relative h-44 sm:h-60 lg:h-64 rounded-xl overflow-hidden group border border-neutral-900 shadow-lg">
+            <div className="relative h-44 sm:h-60 lg:h-64 rounded-xl overflow-hidden group border border-neutral-900 shadow-lg" data-aos="fade-up" data-aos-delay="300">
               <img
                 src={shoes}
                 alt="Shoes"
@@ -101,7 +101,7 @@ const Categories = () => {
             </div>
 
             {/* Pants Card */}
-            <div className="relative flex-1 min-h-87.5 lg:min-h-0 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg">
+            <div className="relative flex-1 min-h-87.5 lg:min-h-0 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg" data-aos="fade-up" data-aos-delay="400">
               <img
                 src={pants}
                 alt="Pants"
@@ -122,7 +122,7 @@ const Categories = () => {
         </div>
 
         {/* Bottom Call-to-Action Button */}
-        <div className="mt-2">
+        <div className="mt-2" data-aos="fade-up" data-aos-delay="500">
           <button
             onClick={() => navigate("/new-arrival")}
             className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"

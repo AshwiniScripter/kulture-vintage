@@ -354,7 +354,7 @@ const ProductCategory = ({
               {filteredProducts.map((product) => {
                 const isWishlisted = wishlistedIds.includes(product.id);
                 return (
-                  <div key={product.id} onClick={() => navigate(`/product/${product.id}`)} className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] transition-all duration-500 cursor-pointer ${product.gridClass}`}>
+                  <div key={product.id} onClick={() => navigate(`/product/${product.id}`)} data-aos="fade-up" data-aos-delay={(product.id % 6) * 100} className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] transition-all duration-500 cursor-pointer ${product.gridClass}`}>
                     <img src={product.image} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                     <button onClick={(e) => { e.stopPropagation(); triggerWishlist(product); }} className="absolute top-3 right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-black/70 transition-all z-10 cursor-pointer">
                       <svg className={`w-4 h-4 transition-colors duration-300 ${isWishlisted ? 'text-neutral-300 fill-current scale-110' : 'text-white'}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>

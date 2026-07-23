@@ -30,7 +30,7 @@ const ProductDetail = ({
         <div className="max-w-7xl w-full mx-auto flex flex-col gap-6">
       
           {/* Heading */}
-          <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50">
+          <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50" data-aos="fade-up">
             <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
               CATEGORY
             </h1>
@@ -45,6 +45,7 @@ const ProductDetail = ({
               <div 
                 onClick={() => navigate('/tshirts')} 
                 className="relative h-80 sm:h-112.5 lg:h-125 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg cursor-pointer"
+                data-aos="fade-up" data-aos-delay="100"
               >
                 <img
                   src={tshirt}
@@ -65,6 +66,7 @@ const ProductDetail = ({
                 <div 
                   onClick={() => navigate('/accessories')} 
                   className="relative h-44 sm:h-64 lg:h-72 rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer"
+                  data-aos="fade-up" data-aos-delay="200"
                 >
                   <img
                     src={accessories}
@@ -85,6 +87,7 @@ const ProductDetail = ({
                   <div 
                     onClick={() => navigate('/belts')} 
                     className="relative rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer"
+                    data-aos="fade-up" data-aos-delay="300"
                   >
                     <img
                       src={belt}
@@ -102,6 +105,7 @@ const ProductDetail = ({
                   <div 
                     onClick={() => navigate('/bandana')} 
                     className="relative rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer"
+                    data-aos="fade-up" data-aos-delay="400"
                   >
                     <img
                       src={chain}
@@ -119,6 +123,7 @@ const ProductDetail = ({
                   <div 
                     onClick={() => navigate('/watches')} 
                     className="relative rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer"
+                    data-aos="fade-up" data-aos-delay="500"
                   >
                     <img
                       src={watch}
@@ -136,6 +141,7 @@ const ProductDetail = ({
                   <div 
                     onClick={() => navigate('/shades')} 
                     className="relative rounded-xl overflow-hidden group border border-neutral-900 cursor-pointer"
+                    data-aos="fade-up" data-aos-delay="600"
                   >
                     <img
                       src={shades}
@@ -162,6 +168,7 @@ const ProductDetail = ({
               <div 
                 onClick={() => navigate('/shoes')} 
                 className="relative h-44 sm:h-60 lg:h-64 rounded-xl overflow-hidden group border border-neutral-900 shadow-lg cursor-pointer"
+                data-aos="fade-up" data-aos-delay="700"
               >
                 <img
                   src={shoes}
@@ -179,6 +186,7 @@ const ProductDetail = ({
               <div 
                 onClick={() => navigate('/pants')} 
                 className="relative flex-1 min-h-87.5 lg:min-h-0 rounded-2xl overflow-hidden group border border-neutral-900 shadow-lg cursor-pointer"
+                data-aos="fade-up" data-aos-delay="800"
               >
                 <img
                   src={pants}
@@ -199,7 +207,7 @@ const ProductDetail = ({
         </div>
       </section>
 
-      <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50">
+      <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50" data-aos="fade-up">
         <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
           ALL PRODUCTS
         </h1>

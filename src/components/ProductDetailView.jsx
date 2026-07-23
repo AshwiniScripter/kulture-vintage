@@ -250,6 +250,8 @@ const ProductDetailView = ({ wishlistedIds = [], setWishlistedIds, cartItems = [
                 navigate(`/product/${item}`);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              data-aos="fade-up"
+              data-aos-delay={item * 100}
               className="bg-[#0a0a0a] border border-[#141414] rounded-xl p-3 cursor-pointer transition-all duration-300 hover:border-neutral-700 hover:-translate-y-1 group"
             >
               <div className="w-full aspect-4/5 rounded-lg bg-[#0e0e0e] overflow-hidden mb-3">

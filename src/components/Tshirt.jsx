@@ -422,6 +422,8 @@ const Tshirt = ({
                   <div 
                     key={product.id} 
                     onClick={() => navigate(`/product/${product.id}`)}
+                    data-aos="fade-up"
+                    data-aos-delay={(product.id % 6) * 100}
                     className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] transition-all duration-500 cursor-pointer ${product.gridClass}`}
                   >
                     <img 

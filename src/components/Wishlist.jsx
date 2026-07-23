@@ -85,7 +85,7 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
             {wishlistedProducts.map((product, idx) => {
               const currentId = product.id;
               return (
-                <div key={currentId} className="flex gap-4 items-stretch w-full border border-[#141414] bg-[#0a0a0a] rounded-xl p-3 sm:p-4 hover:border-[#222] transition">
+                <div key={currentId} data-aos="fade-up" data-aos-delay={idx * 100} className="flex gap-4 items-stretch w-full border border-[#141414] bg-[#0a0a0a] rounded-xl p-3 sm:p-4 hover:border-[#222] transition">
                   
                   {/* Card Left: Product Canvas Media Box */}
                   <div className="w-[45%] sm:w-[50%] relative bg-[#0e0e0e] border border-[#161616] rounded-xl overflow-hidden aspect-square shrink-0">
