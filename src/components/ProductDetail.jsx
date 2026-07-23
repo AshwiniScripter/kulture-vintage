@@ -23,7 +23,7 @@ const ProductDetail = ({
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] pt-24">
+    <div className="min-h-screen bg-[#0f0f0f] pt-24 pb-24">
 
       {/* Embedded Categories Component Wrapper */}
       <section className="bg-[#0f0f0f] py-10 px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col justify-center">
@@ -207,7 +207,7 @@ const ProductDetail = ({
         </div>
       </section>
 
-      <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50" data-aos="fade-up">
+      <div className="mt-8 bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50" data-aos="fade-up">
         <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
           ALL PRODUCTS
         </h1>

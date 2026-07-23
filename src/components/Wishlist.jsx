@@ -58,7 +58,7 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
   const totalSum = wishlistedProducts.reduce((sum, item) => sum + (item.price || 1999), 0);
 
   return (
-    <div className="min-h-screen bg-[#070707] text-neutral-400 font-mono selection:bg-neutral-800 flex flex-col pt-24 pb-44 px-4 sm:px-8 md:px-12">
+    <div className="min-h-screen bg-[#0f0f0f] text-neutral-400 font-mono selection:bg-neutral-800 flex flex-col pt-24 pb-44 px-4 sm:px-8 md:px-12">
       
       {/* 1. Safely Spaced Section Title (Prevents collisions with fixed headers) */}
       <div className="w-full text-center py-6 mb-2 max-w-6xl mx-auto">

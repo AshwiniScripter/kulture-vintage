@@ -61,7 +61,7 @@ const ProductDetailView = ({ wishlistedIds = [], setWishlistedIds, cartItems = [
   };
 
   return (
-    <div className="min-h-screen bg-[#070707] text-neutral-400 font-mono pt-28 pb-24 px-4 sm:px-8 md:px-16 xl:px-24 selection:bg-neutral-800">
+    <div className="min-h-screen bg-[#0f0f0f] text-neutral-400 font-mono pt-28 pb-24 px-4 sm:px-8 md:px-16 xl:px-24 selection:bg-neutral-800">
       
       {/* 1. Global Navigation Breadcrumb Control */}
       <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between border-b border-[#141414] pb-4">

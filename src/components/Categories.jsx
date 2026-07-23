@@ -32,13 +32,6 @@ const Categories = () => {
     <section className="bg-[#0f0f0f] py-10 px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col justify-center">
       <div className="max-w-7xl w-full mx-auto flex flex-col gap-6">
 
-        {/* Heading */}
-        <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50" data-aos="fade-up">
-          <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
-            CATEGORY
-          </h1>
-        </div>
-
         {/* Main Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
 
