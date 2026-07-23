@@ -114,8 +114,14 @@ const Categories = () => {
 
         </div>
 
-        {/* Bottom Call-to-Action Button */}
-        <div className="mt-2" data-aos="fade-up" data-aos-delay="500">
+        {/* Bottom Call-to-Action Buttons */}
+        <div className="mt-2 grid grid-cols-2 gap-4" data-aos="fade-up" data-aos-delay="500">
+          <button
+            onClick={() => navigate("/products")}
+            className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"
+          >
+            CATEGORY
+          </button>
           <button
             onClick={() => navigate("/new-arrival")}
             className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest hover:bg-red-600 hover:text-white active:scale-[0.99] transition duration-300 shadow-xl cursor-pointer"
