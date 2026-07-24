@@ -21,6 +21,7 @@ import Belts from "./components/Belts";
 import Watches from "./components/Watches"; 
 import NewArrival from "./components/NewArrival";
 import Profile from "./components/Profile"; 
+import Addresses from "./components/Addresses";
 
 // A tiny internal behavior hook to instantly scroll the window to coordinates (0,0) on any location changes
 function ScrollToTopSystem() {
@@ -147,6 +148,9 @@ function App() {
             {/* PROFILE VIEW */}
             <Route path="/profile" element={<Profile />} />
 
+            {/* ADDRESSES MANAGEMENT VIEW */}
+            <Route path="/addresses" element={<Addresses />} />
+
             {/* Dedicated Catalogue View Routes */}
             <Route
               path="/tshirts"
@@ -254,7 +258,7 @@ function App() {
           setCartItems={setCartItems}
         />
 
-        {/* 2. ADDED GLOBAL FOOTER HERE */}
+        {/* GLOBAL FOOTER */}
         <Footer />
       </div>
     </BrowserRouter>
