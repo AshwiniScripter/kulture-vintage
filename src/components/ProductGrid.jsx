@@ -80,7 +80,7 @@ const ProductGrid = ({
   };
 
   return (
-    <section className="bg-[#0f0f0f] text-white py-12 px-4 sm:px-6 lg:px-8 relative">
+    <section className="bg-[#0f0f0f] text-white pt-2 pb-12 px-4 sm:px-6 lg:px-8 relative">
       
       {/* Toast Overlay Stack */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full px-4 sm:px-0">
