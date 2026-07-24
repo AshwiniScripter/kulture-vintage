@@ -22,7 +22,7 @@ const ProductDetail = ({
     <div className="bg-[#0f0f0f] pt-20 sm:pt-24 pb-24">
 
       {/* Embedded Categories Component Wrapper */}
-      <section className="bg-[#0f0f0f] py-6 sm:py-10 px-2 sm:px-6 lg:px-8 flex flex-col justify-center">
+      <section className="bg-[#0f0f0f] pt-6 pb-2 sm:pt-10 sm:pb-4 px-2 sm:px-6 lg:px-8 flex flex-col justify-center">
         <div className="max-w-7xl w-full mx-auto flex flex-col gap-4 sm:gap-6">
       
           {/* Heading */}
@@ -123,11 +123,14 @@ const ProductDetail = ({
       </section>
 
       {/* ALL PRODUCTS SECTION */}
-      <div className="mt-8 bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50" data-aos="fade-up">
-        <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
-          ALL PRODUCTS
-        </h1>
+      <div className="mt-2 sm:mt-4 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="bg-black rounded-xl py-4 sm:py-6 shadow-xl border border-neutral-900/50" data-aos="fade-up">
+          <h1 className="text-center text-neutral-300 text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest uppercase selection:bg-neutral-700 selection:text-white">
+            ALL PRODUCTS
+          </h1>
+        </div>
       </div>
+
       <ProductGrid
         cartItems={cartItems}
         setCartItems={setCartItems}
