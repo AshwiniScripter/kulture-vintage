@@ -93,6 +93,17 @@ const Addresses = () => {
     saveAddressesToStorage(updated);
   };
 
+  // Back Button Navigation Click Handler
+  const handleBackClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (view === 'new') {
+      setView('list');
+    } else {
+      navigate(-1);
+    }
+  };
+
   // Interactive Map Click Handler
   const handleMapClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -148,8 +159,9 @@ const Addresses = () => {
         {/* TOP BAR / BACK NAVIGATION */}
         <div className="flex items-center justify-between pb-2">
           <button
-            onClick={() => view === 'new' ? setView('list') : navigate(-1)}
-            className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white transition cursor-pointer"
+            type="button"
+            onClick={handleBackClick}
+            className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white transition cursor-pointer py-2 px-1 z-20"
           >
             <IoChevronBack className="text-base" />
             <span>BACK</span>
@@ -200,6 +212,7 @@ const Addresses = () => {
                 </div>
 
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteAddress(addr.id);
@@ -214,6 +227,7 @@ const Addresses = () => {
 
             <div className="pt-6">
               <button
+                type="button"
                 onClick={() => setView('new')}
                 className="w-full bg-[#0d0d0d] border border-neutral-800 hover:border-neutral-600 text-white text-xs font-bold py-4 rounded-xl tracking-[0.25em] uppercase transition active:scale-[0.99] cursor-pointer"
               >

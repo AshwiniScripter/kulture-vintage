@@ -687,7 +687,7 @@ const Profile = () => {
                 </div>
                 <div className="p-3 bg-[#181818] rounded-xl border border-neutral-800 space-y-1">
                   <p className="font-bold text-white uppercase text-[10px] tracking-wider">Support Hours</p>
-                  <p className="text-neutral-400">Mon - Sat: 10:00 AM - 8:00 PM IST</p>
+                  <p className="text-neutral-400">Mon - Sun: 11:00 AM - 10:00 PM IST</p>
                 </div>
                 <button
                   onClick={() => setActiveModal(null)}
