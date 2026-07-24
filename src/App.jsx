@@ -10,6 +10,7 @@ import ProductDetail from "./components/ProductDetail";
 import ProductDetailView from "./components/ProductDetailView"; 
 import Wishlist from "./components/Wishlist"; 
 import Footer from "./components/Footer";
+import About from "./components/About"; // <-- Added About import
 
 import Tshirt from "./components/Tshirt"; 
 import Shoes from "./components/Shoes";
@@ -23,10 +24,10 @@ import NewArrival from "./components/NewArrival";
 import Profile from "./components/Profile"; 
 import Addresses from "./components/Addresses";
 
-// 1. Import the FAQ Bot Component
+// FAQ Bot Component
 import FAQBot from "./components/FAQBot"; 
 
-// A tiny internal behavior hook to instantly scroll the window to coordinates (0,0) on any location changes
+// Scroll behavior hook
 function ScrollToTopSystem() {
   const { pathname } = useLocation();
 
@@ -71,7 +72,7 @@ function App() {
 
   return (
     <BrowserRouter basename="/kulture-vintage">
-      {/* Listens globally inside BrowserRouter to force viewport jumps to top immediately on navigation */}
+      {/* Forces viewport jump to top on navigation */}
       <ScrollToTopSystem />
 
       <div className="bg-[#0f0f0f] min-h-screen text-white relative flex flex-col justify-between">
@@ -96,6 +97,9 @@ function App() {
                 />
               }
             />
+
+            {/* ABOUT US VIEW ROUTE */}
+            <Route path="/about" element={<About />} />
 
             <Route
               path="/products"
@@ -253,7 +257,7 @@ function App() {
           </Routes>
         </div>
 
-        {/* Global Slide-Out Overlay Canvas Panel */}
+        {/* Global Cart Drawer */}
         <CartDrawer
           isOpen={isCartOpen}
           onClose={() => setIsCartOpen(false)}
@@ -261,10 +265,10 @@ function App() {
           setCartItems={setCartItems}
         />
 
-        {/* 2. Global Floating FAQ Chatbot Component */}
+        {/* Global Floating FAQ Chatbot */}
         <FAQBot />
 
-        {/* GLOBAL FOOTER */}
+        {/* Global Footer */}
         <Footer />
       </div>
     </BrowserRouter>
