@@ -9,6 +9,7 @@ import {
   IoMenu,
   IoHomeOutline,
   IoSparkles,
+  IoInformationCircleOutline,
 } from "react-icons/io5";
 import logo from "../assets/logo.png";
 import dummyImage from "../assets/dummyImage.jpeg";
@@ -74,11 +75,23 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <img src={logo} alt="Logo" className="w-16 md:w-20 cursor-pointer" />
           </Link>
 
-          {/* Desktop Icons */}
+          {/* Desktop Navigation Icons */}
           <div className="hidden md:flex items-center gap-5">
+            {/* About Us Icon (Matches style & size of other navbar icons) */}
+            <button
+              type="button"
+              onClick={() => navigate("/about")}
+              aria-label="About Us"
+              title="About Us"
+              className="text-white hover:text-neutral-300 transition cursor-pointer"
+            >
+              <IoInformationCircleOutline className="text-4xl" />
+            </button>
+
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
+              aria-label="Search"
               className="text-white hover:text-neutral-300 transition cursor-pointer"
             >
               <IoSearchOutline className="text-4xl" />
@@ -87,6 +100,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <button
               type="button"
               onClick={() => navigate("/wishlist")}
+              aria-label="Wishlist"
               className="relative text-white hover:text-neutral-300 transition cursor-pointer"
             >
               <IoHeartOutline className="text-4xl" />
@@ -100,6 +114,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <button
               type="button"
               onClick={onCartClick}
+              aria-label="Shopping Cart"
               className="relative text-white hover:text-neutral-300 transition cursor-pointer"
             >
               <HiOutlineShoppingCart className="text-4xl" />
@@ -114,6 +129,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             <button
               type="button"
               onClick={() => navigate("/profile")}
+              aria-label="Profile"
               className="text-white hover:text-neutral-300 transition cursor-pointer"
             >
               <IoPersonOutline className="text-4xl" />
@@ -124,6 +140,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle Menu"
             className="md:hidden text-white hover:text-neutral-300 transition cursor-pointer"
           >
             {mobileMenuOpen ? (
@@ -137,7 +154,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
 
       {/* Mobile Dropdown Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-x-0 top-0 z-[140] pt-24 px-4 md:hidden">
+        <div className="fixed inset-x-0 top-0 z-140 pt-24 px-4 md:hidden">
           <div className="bg-[#141414] border border-neutral-900 rounded-2xl shadow-2xl overflow-hidden mx-2">
             <button
               onClick={() => { setSearchOpen(true); setMobileMenuOpen(false); }}
@@ -159,6 +176,13 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
             >
               <IoSparkles className="text-xl text-neutral-400" />
               <span className="text-sm font-mono font-bold tracking-wider text-neutral-200 uppercase">New Arrival</span>
+            </button>
+            <button
+              onClick={() => { navigate("/about"); setMobileMenuOpen(false); }}
+              className="w-full flex items-center gap-4 px-5 py-4 hover:bg-neutral-900 transition cursor-pointer text-left border-b border-neutral-900"
+            >
+              <IoInformationCircleOutline className="text-xl text-neutral-400" />
+              <span className="text-sm font-mono font-bold tracking-wider text-neutral-200 uppercase">About Us</span>
             </button>
             <button
               onClick={() => { navigate("/wishlist"); setMobileMenuOpen(false); }}
@@ -193,7 +217,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
 
       {/* Search Overlay */}
       {searchOpen && (
-        <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col">
+        <div className="fixed inset-0 z-200 bg-black/95 backdrop-blur-md flex flex-col">
           <div className="max-w-3xl w-full mx-auto px-4 pt-6 flex items-center gap-3">
             <div className="flex-1 flex items-center bg-[#141414] border border-neutral-800 rounded-xl px-4 py-3 focus-within:border-red-600 transition">
               <IoSearchOutline className="text-xl text-neutral-500 shrink-0" />
