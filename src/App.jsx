@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import MarqueeBanner from "./components/MarqueeBanner";
 import Categories from "./components/Categories";
+import ProductCarousel from "./components/ProductCarousel";
 import ProductGrid from "./components/ProductGrid";
 import CartDrawer from "./components/CartDrawer";
 import ProductDetail from "./components/ProductDetail";
@@ -38,6 +40,8 @@ function ScrollToTopSystem() {
   return null;
 }
 
+import dummyImage from "./assets/dummyImage.jpeg";
+
 // 1. Unified Home View Layout
 function Home({
   cartItems,
@@ -45,10 +49,47 @@ function Home({
   wishlistedIds,
   setWishlistedIds,
 }) {
+  const carouselProducts = [
+    { id: 101, title: "VINTAGE GRAPHIC TEE", price: "₹1,999", image: dummyImage },
+    { id: 102, title: "WASHED DENIM JACKET", price: "₹4,499", image: dummyImage },
+    { id: 103, title: "CARGO PANTS - OLIVE", price: "₹2,799", image: dummyImage },
+    { id: 104, title: "BANDANA PRINT CAP", price: "₹1,499", image: dummyImage },
+    { id: 105, title: "RETRO SHADES", price: "₹999", image: dummyImage },
+    { id: 106, title: "LEATHER BELT", price: "₹1,299", image: dummyImage },
+  ];
+
+  const triggerWishlist = (product) => {
+    if (wishlistedIds.includes(product.id)) {
+      setWishlistedIds((prev) => prev.filter((id) => id !== product.id));
+    } else {
+      setWishlistedIds((prev) => [...prev, product.id]);
+    }
+  };
+
+  const triggerCart = (product) => {
+    setCartItems((prevItems) => {
+      const existing = prevItems.find((item) => item.id === product.id);
+      if (existing) {
+        return prevItems.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevItems, { ...product, quantity: 1 }];
+    });
+  };
+
   return (
     <div>
       <Hero />
+      <MarqueeBanner />
       <Categories />
+      <ProductCarousel
+        title="Featured Picks"
+        products={carouselProducts}
+        wishlistedIds={wishlistedIds}
+        onWishlistToggle={triggerWishlist}
+        onAddToCart={triggerCart}
+      />
       <ProductGrid
         cartItems={cartItems}
         setCartItems={setCartItems}
