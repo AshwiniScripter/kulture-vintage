@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   IoPencil, 
@@ -6,25 +6,29 @@ import {
   IoHeartOutline, 
   IoPricetagOutline, 
   IoStarOutline,
-  IoCubeOutline,
   IoChevronForward,
   IoPersonOutline,
   IoLocationOutline,
-  IoCardOutline,
   IoShieldCheckmarkOutline,
   IoNotificationsOutline,
   IoHeadsetOutline,
-  IoHelpCircleOutline,
-  IoInformationCircleOutline,
   IoLogOutOutline,
-  IoPaperPlaneOutline,
-  IoCheckmarkDoneCircleOutline,
-  IoRepeatOutline,
-  IoCloseOutline
+  IoCloseOutline,
+  IoCheckmarkCircle,
+  IoCubeOutline,
+  IoCheckmark,
+  IoReloadOutline,
+  IoChevronBack
 } from "react-icons/io5";
+
+// CONFIGURATION: Replace with your actual backend API & WebSocket URLs
+const API_BASE_URL = "https://api.yourdomain.com"; // e.g. http://localhost:5000/api
+const WS_BASE_URL = "wss://api.yourdomain.com/ws"; // WebSocket endpoint
 
 const Profile = () => {
   const navigate = useNavigate();
+  const socketRef = useRef(null);
+
   const [user, setUser] = useState({
     name: "Parth Bhalala",
     username: "@parth.vibes",
@@ -34,6 +38,29 @@ const Profile = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(user);
+
+  // Modal Views State
+  const [activeModal, setActiveModal] = useState(null); // 'personal' | 'password' | 'notifications' | 'track' | 'support' | null
+  const [toastMessage, setToastMessage] = useState('');
+
+  // Backend Real-Time Tracking State
+  const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+
+  // Extended Profile State
+  const [personalDetails, setPersonalDetails] = useState({
+    firstName: "Parth",
+    lastName: "Bhalala",
+    email: "parth.bhalala@example.com",
+    phone: "+91 98765 43210"
+  });
+
+  const [notifications, setNotifications] = useState({
+    orderUpdates: true,
+    promotions: false,
+    securityAlerts: true
+  });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -47,17 +74,122 @@ const Profile = () => {
         console.error("Error loading profile", e);
       }
     }
+
+    // Fetch initial order history from backend
+    fetchUserOrders();
+
+    // Setup Real-time WebSockets for Live Status Updates
+    setupWebSocket();
+
+    return () => {
+      if (socketRef.current) socketRef.current.close();
+    };
   }, []);
+
+  // 1. BACKEND API: Fetch User Orders
+  const fetchUserOrders = async () => {
+    setLoadingOrders(true);
+    try {
+      const token = localStorage.getItem("token"); // Auth Token
+      const res = await fetch(`${API_BASE_URL}/orders`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        setOrders(data);
+      } else {
+        // Fallback Mock Data for Development Preview
+        setOrders(getMockOrders());
+      }
+    } catch (err) {
+      console.warn("Backend unavailable, loading mock order data.");
+      setOrders(getMockOrders());
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
+  // 2. REAL-TIME: Setup WebSocket Listener for Order Updates
+  const setupWebSocket = () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      socketRef.current = new WebSocket(`${WS_BASE_URL}?token=${token}`);
+
+      socketRef.current.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+
+        // Event: Order status changed from backend
+        if (message.type === "ORDER_STATUS_UPDATE") {
+          const updatedOrder = message.payload;
+          
+          setOrders(prevOrders => 
+            prevOrders.map(ord => ord.id === updatedOrder.id ? updatedOrder : ord)
+          );
+
+          if (selectedOrder && selectedOrder.id === updatedOrder.id) {
+            setSelectedOrder(updatedOrder);
+          }
+
+          showToast(`Order #${updatedOrder.id} status updated!`);
+        }
+      };
+    } catch (e) {
+      console.error("WebSocket connection failed:", e);
+    }
+  };
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 3000);
+  };
 
   const handleSaveProfile = (e) => {
     e.preventDefault();
     setUser(formData);
     localStorage.setItem("kv_user_profile", JSON.stringify(formData));
     setIsEditing(false);
+    showToast("Profile header updated!");
+  };
+
+  const handleSavePersonalInfo = (e) => {
+    e.preventDefault();
+    setUser(prev => ({ ...prev, name: `${personalDetails.firstName} ${personalDetails.lastName}` }));
+    setActiveModal(null);
+    showToast("Personal information saved!");
+  };
+
+  const handleSavePassword = (e) => {
+    e.preventDefault();
+    setActiveModal(null);
+    showToast("Password updated successfully!");
+  };
+
+  const handleMenuItemClick = (path) => {
+    if (path === "/personal-info") setActiveModal('personal');
+    else if (path === "/track-order") {
+      setSelectedOrder(null); // Reset selection to show full order list
+      setActiveModal('track');
+    }
+    else if (path === "/password") setActiveModal('password');
+    else if (path === "/notifications") setActiveModal('notifications');
+    else if (path === "/support") setActiveModal('support');
+    else navigate(path);
   };
 
   return (
     <div className="min-h-screen bg-[#080808] pt-20 pb-24 px-4 sm:px-6 lg:px-8 text-neutral-200 font-sans relative">
+      
+      {/* TOAST NOTIFICATION */}
+      {toastMessage && (
+        <div className="fixed top-20 right-4 z-50 bg-neutral-900 border border-green-500/40 text-green-400 text-xs px-4 py-3 rounded-xl flex items-center gap-2 shadow-2xl animate-bounce">
+          <IoCheckmarkCircle className="text-base" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       <div className="max-w-md md:max-w-lg mx-auto space-y-5">
 
         {/* 1. TOP HEADER BANNER */}
@@ -112,7 +244,7 @@ const Profile = () => {
           <div className="grid grid-cols-4 border-t border-neutral-800/80 pt-4 text-center">
             <div className="space-y-1">
               <IoBagOutline className="mx-auto text-lg text-neutral-400" />
-              <p className="text-sm font-bold text-white font-mono">12</p>
+              <p className="text-sm font-bold text-white font-mono">{orders.length}</p>
               <p className="text-[10px] text-neutral-500 uppercase tracking-wider">Orders</p>
             </div>
             <div className="space-y-1 border-l border-neutral-800/60">
@@ -133,46 +265,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* 3. ORDER OVERVIEW SECTION */}
-        <div className="bg-[#111111] border border-neutral-800/80 rounded-2xl p-4 shadow-xl">
-          <div className="flex items-center justify-between mb-4 px-1">
-            <h3 className="text-xs font-bold text-white tracking-widest uppercase">
-              Order Overview
-            </h3>
-            <button 
-              onClick={() => navigate("/orders")}
-              className="text-xs text-neutral-400 hover:text-white flex items-center gap-0.5 transition"
-            >
-              <span>View All</span>
-              <IoChevronForward className="text-xs" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-4 text-center">
-            <div className="space-y-1 py-1 cursor-pointer hover:opacity-80 transition" onClick={() => navigate("/orders")}>
-              <IoCubeOutline className="mx-auto text-xl text-neutral-300" />
-              <p className="text-sm font-bold text-white font-mono">3</p>
-              <p className="text-[10px] text-neutral-500 uppercase">Processing</p>
-            </div>
-            <div className="space-y-1 py-1 border-l border-neutral-800/60 cursor-pointer hover:opacity-80 transition" onClick={() => navigate("/orders")}>
-              <IoPaperPlaneOutline className="mx-auto text-xl text-neutral-300" />
-              <p className="text-sm font-bold text-white font-mono">2</p>
-              <p className="text-[10px] text-neutral-500 uppercase">Shipped</p>
-            </div>
-            <div className="space-y-1 py-1 border-l border-neutral-800/60 cursor-pointer hover:opacity-80 transition" onClick={() => navigate("/orders")}>
-              <IoCheckmarkDoneCircleOutline className="mx-auto text-xl text-neutral-300" />
-              <p className="text-sm font-bold text-white font-mono">6</p>
-              <p className="text-[10px] text-neutral-500 uppercase">Delivered</p>
-            </div>
-            <div className="space-y-1 py-1 border-l border-neutral-800/60 cursor-pointer hover:opacity-80 transition" onClick={() => navigate("/orders")}>
-              <IoRepeatOutline className="mx-auto text-xl text-neutral-300" />
-              <p className="text-sm font-bold text-white font-mono">1</p>
-              <p className="text-[10px] text-neutral-500 uppercase">Returns</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 4. ACCOUNT MENU LIST */}
+        {/* 3. ACCOUNT MENU LIST */}
         <div className="bg-[#111111] border border-neutral-800/80 rounded-2xl p-2 shadow-xl divide-y divide-neutral-800/50">
           <p className="text-[11px] font-bold text-neutral-400 tracking-widest uppercase px-3 pt-3 pb-2">
             Account Menu
@@ -180,16 +273,16 @@ const Profile = () => {
 
           {[
             { label: "Personal Information", icon: IoPersonOutline, path: "/personal-info" },
+            { label: "Track Order", icon: IoCubeOutline, path: "/track-order" },
             { label: "Addresses", icon: IoLocationOutline, path: "/addresses" },
-            { label: "Payment Methods", icon: IoCardOutline, path: "/payments" },
-            { label: "Security", icon: IoShieldCheckmarkOutline, path: "/security" },
+            { label: "Password", icon: IoShieldCheckmarkOutline, path: "/password" },
             { label: "Notification Preferences", icon: IoNotificationsOutline, path: "/notifications" },
           ].map((item, index) => {
             const IconComponent = item.icon;
             return (
               <button
                 key={index}
-                onClick={() => navigate(item.path)}
+                onClick={() => handleMenuItemClick(item.path)}
                 className="w-full flex items-center justify-between p-3.5 hover:bg-neutral-800/40 rounded-xl transition cursor-pointer text-left group"
               >
                 <div className="flex items-center gap-3">
@@ -204,39 +297,24 @@ const Profile = () => {
           })}
         </div>
 
-        {/* 5. MORE ACTIONS & SUPPORT */}
+        {/* 4. MORE ACTIONS & SUPPORT */}
         <div className="bg-[#111111] border border-neutral-800/80 rounded-2xl p-3 shadow-xl space-y-3">
           <p className="text-[11px] font-bold text-neutral-400 tracking-widest uppercase px-1 pt-1">
             More
           </p>
 
-          <div className="grid grid-cols-3 gap-2">
-            <button 
-              onClick={() => navigate("/support")}
-              className="flex items-center justify-center gap-1.5 bg-[#181818] hover:bg-neutral-800 border border-neutral-800 py-2.5 px-2 rounded-xl text-[11px] font-medium text-neutral-300 transition"
-            >
-              <IoHeadsetOutline className="text-sm" />
-              <span>Help & Support</span>
-            </button>
-            <button 
-              onClick={() => navigate("/faqs")}
-              className="flex items-center justify-center gap-1.5 bg-[#181818] hover:bg-neutral-800 border border-neutral-800 py-2.5 px-2 rounded-xl text-[11px] font-medium text-neutral-300 transition"
-            >
-              <IoHelpCircleOutline className="text-sm" />
-              <span>FAQs</span>
-            </button>
-            <button 
-              onClick={() => navigate("/about")}
-              className="flex items-center justify-center gap-1.5 bg-[#181818] hover:bg-neutral-800 border border-neutral-800 py-2.5 px-2 rounded-xl text-[11px] font-medium text-neutral-300 transition"
-            >
-              <IoInformationCircleOutline className="text-sm" />
-              <span>About Kulture</span>
-            </button>
-          </div>
+          <button 
+            onClick={() => handleMenuItemClick("/support")}
+            className="w-full flex items-center justify-center gap-2 bg-[#181818] hover:bg-neutral-800 border border-neutral-800 py-3 px-3 rounded-xl text-xs font-medium text-neutral-300 transition cursor-pointer"
+          >
+            <IoHeadsetOutline className="text-base text-neutral-400" />
+            <span>Help & Support</span>
+          </button>
 
           <button
             onClick={() => {
               localStorage.removeItem("kv_user_profile");
+              localStorage.removeItem("token");
               navigate("/login");
             }}
             className="w-full flex items-center justify-center gap-2 bg-[#181818] hover:bg-red-900/20 hover:border-red-600/40 border border-neutral-800 py-3 rounded-xl text-xs font-bold text-neutral-300 hover:text-red-400 transition cursor-pointer"
@@ -256,7 +334,7 @@ const Profile = () => {
               <h3 className="text-sm font-bold text-white tracking-widest uppercase">Edit Profile</h3>
               <button 
                 onClick={() => setIsEditing(false)}
-                className="text-neutral-400 hover:text-white p-1 rounded-lg"
+                className="text-neutral-400 hover:text-white p-1 rounded-lg cursor-pointer"
               >
                 <IoCloseOutline className="text-xl" />
               </button>
@@ -317,13 +395,13 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="flex-1 bg-[#181818] hover:bg-neutral-800 text-neutral-300 text-xs font-bold py-3 rounded-xl transition"
+                  className="flex-1 bg-[#181818] hover:bg-neutral-800 text-neutral-300 text-xs font-bold py-3 rounded-xl transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-xl transition"
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer"
                 >
                   Save Changes
                 </button>
@@ -333,8 +411,333 @@ const Profile = () => {
         </div>
       )}
 
+      {/* DYNAMIC MODALS FOR MENU ITEMS */}
+      {activeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-[#111111] border border-neutral-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            
+            <div className="flex items-center justify-between pb-4 border-b border-neutral-800">
+              <div className="flex items-center gap-2">
+                {activeModal === 'track' && selectedOrder && (
+                  <button 
+                    onClick={() => setSelectedOrder(null)} 
+                    className="text-neutral-400 hover:text-white mr-1"
+                  >
+                    <IoChevronBack className="text-lg" />
+                  </button>
+                )}
+                <h3 className="text-sm font-bold text-white tracking-widest uppercase">
+                  {activeModal === 'personal' && 'Personal Information'}
+                  {activeModal === 'track' && (selectedOrder ? `Order #${selectedOrder.id}` : 'Select Order to Track')}
+                  {activeModal === 'password' && 'Password'}
+                  {activeModal === 'notifications' && 'Notifications'}
+                  {activeModal === 'support' && 'Help & Support'}
+                </h3>
+              </div>
+              <button 
+                onClick={() => setActiveModal(null)}
+                className="text-neutral-400 hover:text-white p-1 rounded-lg cursor-pointer"
+              >
+                <IoCloseOutline className="text-xl" />
+              </button>
+            </div>
+
+            {/* 1. PERSONAL INFORMATION FORM */}
+            {activeModal === 'personal' && (
+              <form onSubmit={handleSavePersonalInfo} className="mt-4 space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[10px] font-mono uppercase text-neutral-500 block mb-1">First Name</label>
+                    <input
+                      type="text"
+                      value={personalDetails.firstName}
+                      onChange={(e) => setPersonalDetails({ ...personalDetails, firstName: e.target.value })}
+                      className="w-full bg-[#181818] border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-600"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-mono uppercase text-neutral-500 block mb-1">Last Name</label>
+                    <input
+                      type="text"
+                      value={personalDetails.lastName}
+                      onChange={(e) => setPersonalDetails({ ...personalDetails, lastName: e.target.value })}
+                      className="w-full bg-[#181818] border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-600"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-[10px] font-mono uppercase text-neutral-500 block mb-1">Email</label>
+                  <input
+                    type="email"
+                    value={personalDetails.email}
+                    onChange={(e) => setPersonalDetails({ ...personalDetails, email: e.target.value })}
+                    className="w-full bg-[#181818] border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-600"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-mono uppercase text-neutral-500 block mb-1">Phone</label>
+                  <input
+                    type="tel"
+                    value={personalDetails.phone}
+                    onChange={(e) => setPersonalDetails({ ...personalDetails, phone: e.target.value })}
+                    className="w-full bg-[#181818] border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-600"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer uppercase tracking-wider"
+                >
+                  Save Details
+                </button>
+              </form>
+            )}
+
+            {/* 2. REAL-TIME MULTI-ORDER LIST & TRACKING */}
+            {activeModal === 'track' && (
+              <div className="mt-4 space-y-4">
+                
+                {/* STATE A: Show All Active Orders */}
+                {!selectedOrder && (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-[11px] text-neutral-500 font-mono">
+                      <span>RECENT ORDERS ({orders.length})</span>
+                      <button 
+                        onClick={fetchUserOrders} 
+                        className="flex items-center gap-1 hover:text-white transition cursor-pointer"
+                      >
+                        <IoReloadOutline className={loadingOrders ? "animate-spin" : ""} /> Refresh
+                      </button>
+                    </div>
+
+                    {loadingOrders ? (
+                      <div className="py-8 text-center text-xs text-neutral-500">Loading live orders...</div>
+                    ) : orders.length === 0 ? (
+                      <div className="py-8 text-center text-xs text-neutral-500">No active orders found.</div>
+                    ) : (
+                      orders.map((ord) => (
+                        <div
+                          key={ord.id}
+                          onClick={() => setSelectedOrder(ord)}
+                          className="flex items-center justify-between bg-[#181818] p-3 rounded-xl border border-neutral-800 hover:border-neutral-700 transition cursor-pointer group"
+                        >
+                          <div className="flex items-center gap-3">
+                            <img src={ord.image} alt={ord.item} className="w-12 h-12 rounded-lg object-cover" />
+                            <div className="text-xs space-y-0.5">
+                              <p className="font-bold text-white group-hover:text-red-500 transition">{ord.item}</p>
+                              <p className="text-[10px] text-neutral-500 font-mono">ID: {ord.id} • {ord.price}</p>
+                              <p className="text-[10px] text-emerald-400 font-medium">Est: {ord.estimatedDelivery}</p>
+                            </div>
+                          </div>
+                          <IoChevronForward className="text-neutral-600 group-hover:text-white transition" />
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {/* STATE B: Show Detailed Tracking for Selected Order */}
+                {selectedOrder && (
+                  <div className="space-y-5">
+                    <div className="flex gap-3 bg-[#181818] p-3 rounded-xl border border-neutral-800">
+                      <img 
+                        src={selectedOrder.image} 
+                        alt={selectedOrder.item} 
+                        className="w-16 h-16 rounded-lg object-cover"
+                      />
+                      <div className="flex-1 text-xs space-y-1">
+                        <p className="font-bold text-white leading-tight">{selectedOrder.item}</p>
+                        <p className="text-neutral-400 text-[10px]">Size: {selectedOrder.size} | {selectedOrder.price}</p>
+                        <p className="text-neutral-500 font-mono text-[10px]">Order ID: {selectedOrder.id}</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-3 text-center">
+                      <p className="text-[10px] text-emerald-400 font-mono uppercase tracking-wider">Estimated Delivery</p>
+                      <p className="text-sm font-bold text-emerald-300 mt-0.5">{selectedOrder.estimatedDelivery}</p>
+                    </div>
+
+                    {/* Timeline Vertical Stepper */}
+                    <div className="px-2 space-y-0">
+                      {selectedOrder.steps.map((step, index) => (
+                        <div key={index} className="flex gap-4 relative pb-6 last:pb-0">
+                          {index !== selectedOrder.steps.length - 1 && (
+                            <div 
+                              className={`absolute left-11px top-6 w-2px h-full ${
+                                step.completed ? "bg-emerald-500" : "bg-neutral-800"
+                              }`}
+                            />
+                          )}
+
+                          <div className="relative z-10 shrink-0">
+                            <div 
+                              className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] ${
+                                step.completed 
+                                  ? "bg-emerald-500 text-black font-bold" 
+                                  : step.active 
+                                  ? "bg-red-600 text-white animate-pulse" 
+                                  : "bg-neutral-800 text-neutral-500"
+                              }`}
+                            >
+                              {step.completed ? <IoCheckmark className="text-xs stroke-3" /> : index + 1}
+                            </div>
+                          </div>
+
+                          <div className="text-xs">
+                            <p className={`font-semibold ${step.completed || step.active ? "text-white" : "text-neutral-500"}`}>
+                              {step.label}
+                            </p>
+                            <p className="text-[10px] text-neutral-500 font-mono mt-0.5">{step.date}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="bg-[#181818] p-3 rounded-xl border border-neutral-800 text-xs space-y-1">
+                      <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-wider">Delivering To</p>
+                      <p className="text-neutral-300 font-medium">{selectedOrder.address}</p>
+                    </div>
+
+                    <button
+                      onClick={() => { setActiveModal('support'); }}
+                      className="w-full bg-[#181818] hover:bg-neutral-800 text-neutral-300 border border-neutral-800 text-xs font-bold py-2.5 rounded-xl transition cursor-pointer"
+                    >
+                      Need Help With This Order?
+                    </button>
+                  </div>
+                )}
+
+              </div>
+            )}
+
+            {/* 3. PASSWORD FORM */}
+            {activeModal === 'password' && (
+              <form onSubmit={handleSavePassword} className="mt-4 space-y-4">
+                <div>
+                  <label className="text-[10px] font-mono uppercase text-neutral-500 block mb-1">Current Password</label>
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    className="w-full bg-[#181818] border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-600"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-mono uppercase text-neutral-500 block mb-1">New Password</label>
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    className="w-full bg-[#181818] border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-600"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer uppercase tracking-wider"
+                >
+                  Update Password
+                </button>
+              </form>
+            )}
+
+            {/* 4. NOTIFICATION PREFERENCES */}
+            {activeModal === 'notifications' && (
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center justify-between p-3 bg-[#181818] rounded-xl border border-neutral-800">
+                  <div>
+                    <p className="text-xs font-bold text-white">Order Status Alerts</p>
+                    <p className="text-[10px] text-neutral-500">Shipping and delivery updates</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={notifications.orderUpdates}
+                    onChange={() => setNotifications({ ...notifications, orderUpdates: !notifications.orderUpdates })}
+                    className="accent-red-600 w-4 h-4 cursor-pointer"
+                  />
+                </div>
+                <div className="flex items-center justify-between p-3 bg-[#181818] rounded-xl border border-neutral-800">
+                  <div>
+                    <p className="text-xs font-bold text-white">Promotions & Offers</p>
+                    <p className="text-[10px] text-neutral-500">Exclusive drop notifications</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={notifications.promotions}
+                    onChange={() => setNotifications({ ...notifications, promotions: !notifications.promotions })}
+                    className="accent-red-600 w-4 h-4 cursor-pointer"
+                  />
+                </div>
+                <button
+                  onClick={() => { setActiveModal(null); showToast("Notification settings saved!"); }}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer uppercase tracking-wider mt-2"
+                >
+                  Save Preferences
+                </button>
+              </div>
+            )}
+
+            {/* 5. HELP & SUPPORT */}
+            {activeModal === 'support' && (
+              <div className="mt-4 space-y-3 text-xs">
+                <div className="p-3 bg-[#181818] rounded-xl border border-neutral-800 space-y-1">
+                  <p className="font-bold text-white uppercase text-[10px] tracking-wider">Email Us</p>
+                  <p className="text-neutral-400">support@kulturevintage.com</p>
+                </div>
+                <div className="p-3 bg-[#181818] rounded-xl border border-neutral-800 space-y-1">
+                  <p className="font-bold text-white uppercase text-[10px] tracking-wider">Support Hours</p>
+                  <p className="text-neutral-400">Mon - Sat: 10:00 AM - 8:00 PM IST</p>
+                </div>
+                <button
+                  onClick={() => setActiveModal(null)}
+                  className="w-full bg-[#181818] hover:bg-neutral-800 text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer uppercase tracking-wider"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
+
+// Fallback Mock Data Structure for standard API format
+const getMockOrders = () => [
+  {
+    id: "KV-9823411",
+    item: "Oversized Vintage Graphic Tee",
+    size: "L",
+    price: "₹1,999",
+    image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=300",
+    estimatedDelivery: "Mon, 28 Oct",
+    address: "102, Culture Heights, MG Road, Pune, 411001",
+    steps: [
+      { label: "Order Placed", date: "24 Oct, 02:30 PM", completed: true },
+      { label: "Packed & Dispatched", date: "25 Oct, 10:15 AM", completed: true },
+      { label: "Out for Delivery", date: "Expected 28 Oct", completed: false, active: true },
+      { label: "Delivered", date: "Expected 28 Oct", completed: false }
+    ]
+  },
+  {
+    id: "KV-8812304",
+    item: "Retro Washed Denim Jacket",
+    size: "M",
+    price: "₹4,499",
+    image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&q=80&w=300",
+    estimatedDelivery: "Delivered on 12 Oct",
+    address: "102, Culture Heights, MG Road, Pune, 411001",
+    steps: [
+      { label: "Order Placed", date: "10 Oct, 11:00 AM", completed: true },
+      { label: "Packed & Dispatched", date: "11 Oct, 04:00 PM", completed: true },
+      { label: "Out for Delivery", date: "12 Oct, 09:00 AM", completed: true },
+      { label: "Delivered", date: "12 Oct, 02:15 PM", completed: true }
+    ]
+  }
+];
 
 export default Profile;

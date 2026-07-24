@@ -23,6 +23,9 @@ import NewArrival from "./components/NewArrival";
 import Profile from "./components/Profile"; 
 import Addresses from "./components/Addresses";
 
+// 1. Import the FAQ Bot Component
+import FAQBot from "./components/FAQBot"; 
+
 // A tiny internal behavior hook to instantly scroll the window to coordinates (0,0) on any location changes
 function ScrollToTopSystem() {
   const { pathname } = useLocation();
@@ -257,6 +260,9 @@ function App() {
           cartItems={cartItems}
           setCartItems={setCartItems}
         />
+
+        {/* 2. Global Floating FAQ Chatbot Component */}
+        <FAQBot />
 
         {/* GLOBAL FOOTER */}
         <Footer />
