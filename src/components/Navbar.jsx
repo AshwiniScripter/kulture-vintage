@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import {
@@ -12,20 +12,44 @@ import {
   IoInformationCircleOutline,
 } from "react-icons/io5";
 import logo from "../assets/logo.png";
-import { getProducts } from "../services/api";
+import dummyImage from "../assets/dummyImage.jpeg";
+
+const allProducts = [
+  { id: 1, title: "BASEBALL CAP - RED", price: "1,999", category: "Accessories" },
+  { id: 3, title: "MADNESS CAP - BLK", price: "1,899", category: "Accessories" },
+  { id: 101, title: "SMILEY GRAPHIC TEE - GRN", price: "1,999", category: "T-Shirts" },
+  { id: 102, title: "SMILEY GRAPHIC TEE - BLK", price: "1,999", category: "T-Shirts" },
+  { id: 103, title: "STAY GROOVY TEE", price: "1,899", category: "T-Shirts" },
+  { id: 104, title: "GRAFFITI TEE - WHT", price: "1,999", category: "T-Shirts" },
+  { id: 105, title: "OVERSIZED STREET TEE", price: "1,999", category: "T-Shirts" },
+  { id: 201, title: "CHUNKY RUNNER V1 - BLK", price: "4,500", category: "Shoes" },
+  { id: 202, title: "STREET LOW SNEAKER", price: "3,999", category: "Shoes" },
+  { id: 203, title: "PLATFORM BOOT - RED", price: "5,499", category: "Shoes" },
+  { id: 301, title: "INDUSTRIAL UTILITY BELT", price: "1,999", category: "Belts" },
+  { id: 302, title: "CLASSIC LEATHER STRAP", price: "2,499", category: "Belts" },
+  { id: 303, title: "MATTE BLACK BUCKLE BELT", price: "1,750", category: "Belts" },
+  { id: 401, title: "MINIMALIST CARDHOLDER", price: "1,200", category: "Accessories" },
+  { id: 402, title: "STREETWEAR BEANIE", price: "899", category: "Accessories" },
+  { id: 403, title: "SILVER LINK CHAIN", price: "1,599", category: "Accessories" },
+  { id: 501, title: "CHRONO SPORT MATTE", price: "9,500", category: "Watches" },
+  { id: 502, title: "CYBERPUNK DIGITAL V1", price: "7,999", category: "Watches" },
+  { id: 503, title: "STEALTH AUTOMATIC", price: "14,499", category: "Watches" },
+  { id: 601, title: "AVANT-GARDE OVAL SHADES", price: "2,800", category: "Shades" },
+  { id: 602, title: "CYBER MATRIX GLASSES", price: "3,200", category: "Shades" },
+  { id: 603, title: "STEALTH BLACK AVIATORS", price: "2,500", category: "Shades" },
+  { id: 701, title: "CARGO UTILITY PANTS - BLK", price: "4,200", category: "Pants" },
+  { id: 702, title: "RELAXED FIT DENIM", price: "3,899", category: "Pants" },
+  { id: 703, title: "GOTHIC STRAP TROUSERS", price: "4,999", category: "Pants" },
+  { id: 801, title: "PAISLEY STREET BANDANA", price: "890", category: "Bandana" },
+  { id: 802, title: "MONOCHROME MESH MASK", price: "1,100", category: "Bandana" },
+  { id: 803, title: "CRIMSON TIE-DYE WRAP", price: "950", category: "Bandana" },
+];
 
 const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [allProducts, setAllProducts] = useState([]);
-
-  useEffect(() => {
-    getProducts()
-      .then((data) => setAllProducts(data))
-      .catch(() => setAllProducts([]));
-  }, []);
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
@@ -33,9 +57,9 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
     return allProducts.filter(
       (p) =>
         p.title.toLowerCase().includes(q) ||
-        (p.category || '').toLowerCase().includes(q)
+        p.category.toLowerCase().includes(q)
     );
-  }, [query, allProducts]);
+  }, [query]);
 
   const handleSelect = (id) => {
     navigate(`/product/${id}`);
@@ -53,6 +77,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
 
           {/* Desktop Navigation Icons */}
           <div className="hidden md:flex items-center gap-5">
+            {/* About Us Icon (Matches style & size of other navbar icons) */}
             <button
               type="button"
               onClick={() => navigate("/about")}
@@ -100,6 +125,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
               )}
             </button>
 
+            {/* Profile Icon */}
             <button
               type="button"
               onClick={() => navigate("/profile")}
@@ -243,13 +269,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
                     className="flex items-center gap-4 bg-[#141414] border border-neutral-900 hover:border-neutral-700 rounded-xl p-3 transition text-left cursor-pointer group"
                   >
                     <div className="w-14 h-14 rounded-lg bg-[#0e0e0e] overflow-hidden shrink-0 border border-neutral-800">
-                      {product.image ? (
-                        <img src={product.image} alt={product.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-neutral-600 text-[10px]">N/A</span>
-                        </div>
-                      )}
+                      <img src={dummyImage} alt={product.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-mono font-bold text-white tracking-wider uppercase truncate">
@@ -260,7 +280,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
                       </p>
                     </div>
                     <p className="text-sm font-mono font-black text-neutral-300 shrink-0">
-                      {product.priceDisplay || `₹${product.priceNum?.toLocaleString('en-IN')}`}
+                      ₹{product.price}
                     </p>
                   </button>
                 ))}
