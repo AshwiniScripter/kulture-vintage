@@ -1,40 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoHeart, IoBagOutline } from 'react-icons/io5';
-import dummyImage from '../assets/Category/tshirt.png'; 
+import { getProducts } from '../services/api';
 
 const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCartItems }) => {
   const navigate = useNavigate();
+  const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Dynamic mapper safely parsing primitives or fully hydrated objects
-  const wishlistedProducts = wishlistedIds.map((item) => {
-    if (typeof item === 'object' && item !== null) return item;
+  useEffect(() => {
+    getProducts()
+      .then((data) => setAllProducts(data))
+      .catch(() => setAllProducts([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const wishlistedProducts = wishlistedIds.map((id) => {
+    if (typeof id === 'object' && id !== null) return id;
+    const found = allProducts.find(p => String(p.id) === String(id));
+    if (found) return found;
     return {
-      id: item,
-      title: "DESIGNER T SHIRT",
-      price: 1999,
-      discount: "29% OFF",
-      image: dummyImage,
+      id,
+      title: "PRODUCT",
+      price: 0,
+      priceDisplay: "₹0",
+      priceNum: 0,
+      image: null,
       color: "Black",
-      size: "XL"
+      size: "M"
     };
   });
 
   const removeFromWishlist = (idToRemove) => {
     setWishlistedIds(wishlistedIds.filter(item => {
-      const id = typeof item === 'object' ? item.id : item;
-      return String(id) !== String(idToRemove);
+      const itemId = typeof item === 'object' ? item.id : item;
+      return String(itemId) !== String(idToRemove);
     }));
   };
 
   const handleAddToCart = (product) => {
     const cartProduct = {
-      id: `${product.id}-${product.color || 'Black'}-${product.size || 'XL'}`,
+      id: `${product.id}-${product.color || 'Black'}-${product.size || 'M'}`,
+      productId: product.id,
       title: product.title,
-      price: typeof product.price === 'number' ? `₹${product.price.toLocaleString('en-IN')}` : product.price,
+      price: product.priceNum || product.price,
+      priceDisplay: product.priceDisplay || `₹${(product.priceNum || product.price || 0).toLocaleString('en-IN')}`,
       image: product.image,
       color: product.color || 'Black',
-      size: product.size || 'XL',
+      size: product.size || 'M',
       quantity: 1
     };
     setCartItems([...cartItems, cartProduct]);
@@ -43,19 +56,21 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
 
   const handleAddAllToCart = () => {
     const newItems = wishlistedProducts.map(product => ({
-      id: `${product.id}-${product.color || 'Black'}-${product.size || 'XL'}`,
+      id: `${product.id}-${product.color || 'Black'}-${product.size || 'M'}`,
+      productId: product.id,
       title: product.title,
-      price: typeof product.price === 'number' ? `₹${product.price.toLocaleString('en-IN')}` : product.price,
+      price: product.priceNum || product.price,
+      priceDisplay: product.priceDisplay || `₹${(product.priceNum || product.price || 0).toLocaleString('en-IN')}`,
       image: product.image,
       color: product.color || 'Black',
-      size: product.size || 'XL',
+      size: product.size || 'M',
       quantity: 1
     }));
     setCartItems([...cartItems, ...newItems]);
     setWishlistedIds([]);
   };
 
-  const totalSum = wishlistedProducts.reduce((sum, item) => sum + (item.price || 1999), 0);
+  const totalSum = wishlistedProducts.reduce((sum, item) => sum + (item.priceNum || item.price || 0), 0);
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-neutral-400 font-mono selection:bg-neutral-800 flex flex-col pt-24 pb-8 px-4 sm:px-8 md:px-12">
@@ -69,7 +84,20 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
 
       {/* 2. Main Grid Container */}
       <main className="flex-1 w-full max-w-6xl mx-auto mb-8">
-        {wishlistedProducts.length === 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex gap-4 items-stretch w-full border border-[#141414] bg-[#0a0a0a] rounded-xl p-4 animate-pulse">
+                <div className="w-[45%] bg-neutral-800/40 rounded-xl aspect-square" />
+                <div className="flex-1 space-y-3">
+                  <div className="h-4 bg-neutral-800/40 rounded w-3/4" />
+                  <div className="h-3 bg-neutral-800/40 rounded w-1/2" />
+                  <div className="h-5 bg-neutral-800/40 rounded w-1/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : wishlistedProducts.length === 0 ? (
           <div className="w-full min-h-300px flex flex-col items-center justify-center border border-dashed border-[#171717] rounded-xl bg-[#0a0a0a]/30 p-8">
             <p className="text-neutral-600 mb-4 uppercase tracking-[0.15em] text-xs">YOUR WISHLIST IS EMPTY</p>
             <button 
@@ -88,15 +116,16 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
                   
                   {/* Product Image Box */}
                   <div className="w-[45%] sm:w-[50%] relative bg-[#0e0e0e] border border-[#161616] rounded-xl overflow-hidden aspect-square shrink-0">
-                    <img 
-                      src={product.image} 
-                      alt={product.title} 
-                      className="w-full h-full object-cover opacity-90" 
-                    />
-                    {idx === 0 && (
-                      <span className="absolute top-2 left-2 text-[8px] sm:text-[9px] font-sans font-extrabold text-black bg-white px-1.5 py-0.5 rounded tracking-wide">
-                        NEW
-                      </span>
+                    {product.image ? (
+                      <img 
+                        src={product.image} 
+                        alt={product.title} 
+                        className="w-full h-full object-cover opacity-90" 
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-neutral-600 text-[10px] font-mono">NO IMAGE</span>
+                      </div>
                     )}
                     <button 
                       onClick={() => removeFromWishlist(currentId)} 
@@ -113,13 +142,10 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
                         {product.title}
                       </h3>
                       <p className="text-[10px] text-neutral-600 tracking-wide mt-0.5">
-                        {product.color || 'Black'} . {product.size || 'XL'}
+                        {product.color || 'Black'} . {product.size || 'M'}
                       </p>
                       <p className="text-neutral-300 font-bold text-sm sm:text-base mt-2 tracking-wide">
-                        {typeof product.price === 'number' ? `₹${product.price.toLocaleString('en-IN')}` : product.price}
-                      </p>
-                      <p className="text-[10px] text-neutral-500 tracking-wider mt-0.5">
-                        {product.discount || '29% OFF'}
+                        {product.priceDisplay || `₹${(product.priceNum || product.price || 0).toLocaleString('en-IN')}`}
                       </p>
                     </div>
 
@@ -138,12 +164,11 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
         )}
       </main>
 
-      {/* 3. Sticky Action Bar (Sticks while scrolling, stops right before footer) */}
+      {/* 3. Sticky Action Bar */}
       {wishlistedProducts.length > 0 && (
         <div className="sticky bottom-4 mt-auto w-full max-w-6xl mx-auto z-30">
           <div className="bg-[#070707]/95 backdrop-blur-md px-4 py-3 sm:py-4 border border-[#1a1a1a] rounded-2xl shadow-2xl flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
             
-            {/* Summary Tag */}
             <div className="border border-[#141414] bg-[#090909] rounded-xl p-3 flex-1 sm:flex-initial flex items-center justify-between sm:gap-12 text-xs font-bold text-neutral-300 tracking-[0.15em]">
               <div className="flex items-center gap-2.5">
                 <div className="w-7 h-7 rounded-full bg-[#0e0e0e] flex items-center justify-center border border-[#181818]">
@@ -156,7 +181,6 @@ const Wishlist = ({ wishlistedIds = [], setWishlistedIds, cartItems = [], setCar
               </div>
             </div>
 
-            {/* Master Button */}
             <button 
               onClick={handleAddAllToCart} 
               className="w-full sm:w-auto px-8 h-12 sm:h-14 bg-white hover:bg-neutral-200 rounded-xl flex items-center justify-center gap-2.5 text-xs font-bold tracking-[0.2em] text-black uppercase transition duration-200 shadow-lg"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import dummyImage from '../assets/dummyImage.jpeg';
+import { getProducts } from '../services/api';
 
 const COLOR_HEX_MAP = {
   Black: '#111111',
@@ -12,57 +12,12 @@ const COLOR_HEX_MAP = {
   Silver: '#9ca3af',
 };
 
-const tshirtProducts = [
-  {
-    id: 101,
-    title: "SMILEY GRAPHIC TEE - GRN",
-    price: "₹1,999.00",
-    priceNum: 1999,
-    image: dummyImage,
-    colors: ["Green", "Black"],
-    sizes: ["S", "M", "L", "XL"],
-    gridClass: "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[400px]"
-  },
-  {
-    id: 102,
-    title: "SMILEY GRAPHIC TEE - BLK",
-    price: "₹1,999.00",
-    priceNum: 1999,
-    image: dummyImage,
-    colors: ["Black", "White"],
-    sizes: ["S", "M", "L", "XL"],
-    gridClass: "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]"
-  },
-  {
-    id: 103,
-    title: "STAY GROOVY TEE",
-    price: "₹1,899.00",
-    priceNum: 1899,
-    image: dummyImage,
-    colors: ["White", "Black"],
-    sizes: ["S", "M", "L", "XL"],
-    gridClass: "col-span-1 row-span-2 h-[368px] sm:h-[504px] md:h-[624px]"
-  },
-  {
-    id: 104,
-    title: "GRAFFITI TEE - WHT",
-    price: "₹1,999.00",
-    priceNum: 1999,
-    image: dummyImage,
-    colors: ["White", "Red"],
-    sizes: ["S", "M", "L", "XL"],
-    gridClass: "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]"
-  },
-  {
-    id: 105,
-    title: "OVERSIZED STREET TEE",
-    price: "₹1,999.00",
-    priceNum: 1999,
-    image: dummyImage,
-    colors: ["Black", "Red", "Green"],
-    sizes: ["S", "M", "L", "XL"],
-    gridClass: "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[450px]"
-  }
+const GRID_CLASSES = [
+  "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[400px]",
+  "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]",
+  "col-span-1 row-span-2 h-[368px] sm:h-[504px] md:h-[624px]",
+  "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]",
+  "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[450px]",
 ];
 
 const Tshirt = ({ 
@@ -75,6 +30,8 @@ const Tshirt = ({
   const [wishlistAlert, setWishlistAlert] = useState(null);
   const [cartAlert, setCartAlert] = useState(null);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [sortBy, setSortBy] = useState('featured');
   const [selectedColors, setSelectedColors] = useState([]);
@@ -86,20 +43,30 @@ const Tshirt = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    getProducts('Tshirt')
+      .then((data) => { if (!cancelled) setProducts(data); })
+      .catch(() => { if (!cancelled) setProducts([]); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
   const availableColors = useMemo(() => {
     const colorSet = new Set();
-    tshirtProducts.forEach(p => (p.colors || []).forEach(c => colorSet.add(c)));
+    products.forEach(p => (p.colors || []).forEach(c => colorSet.add(c)));
     return Array.from(colorSet);
-  }, []);
+  }, [products]);
 
   const availableSizes = useMemo(() => {
     const sizeSet = new Set();
-    tshirtProducts.forEach(p => (p.sizes || []).forEach(s => sizeSet.add(s)));
+    products.forEach(p => (p.sizes || []).forEach(s => sizeSet.add(s)));
     return Array.from(sizeSet);
-  }, []);
+  }, [products]);
 
   const filteredProducts = useMemo(() => {
-    let result = [...tshirtProducts];
+    let result = [...products];
 
     if (selectedColors.length > 0) {
       result = result.filter(p => 
@@ -129,7 +96,7 @@ const Tshirt = ({
     }
 
     return result;
-  }, [selectedColors, selectedSizes, priceMin, priceMax, sortBy]);
+  }, [products, selectedColors, selectedSizes, priceMin, priceMax, sortBy]);
 
   const activeFilterCount = 
     selectedColors.length + 
@@ -405,7 +372,15 @@ const Tshirt = ({
       {/* Main Grid */}
       <section className="py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl w-full mx-auto">
-          {filteredProducts.length === 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className={`animate-pulse bg-[#141414] border border-neutral-900 rounded-2xl md:rounded-3xl overflow-hidden ${GRID_CLASSES[i % GRID_CLASSES.length]}`}>
+                  <div className="w-full h-full bg-neutral-800/40" />
+                </div>
+              ))}
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
               <svg className="w-12 h-12 text-neutral-700 mb-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
               <p className="text-sm font-mono font-bold tracking-wider text-neutral-500 uppercase">No products match your filters</p>
@@ -415,7 +390,7 @@ const Tshirt = ({
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 auto-rows-max">
-              {filteredProducts.map((product) => {
+              {filteredProducts.map((product, idx) => {
                 const isWishlisted = wishlistedIds.includes(product.id);
 
                 return (
@@ -423,14 +398,20 @@ const Tshirt = ({
                     key={product.id} 
                     onClick={() => navigate(`/product/${product.id}`)}
                     data-aos="fade-up"
-                    data-aos-delay={(product.id % 6) * 100}
-                    className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] transition-all duration-500 cursor-pointer ${product.gridClass}`}
+                    data-aos-delay={(idx % 6) * 100}
+                    className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] transition-all duration-500 cursor-pointer ${product.gridClass || GRID_CLASSES[idx % GRID_CLASSES.length]}`}
                   >
-                    <img 
-                      src={product.image} 
-                      alt={product.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
+                    {product.image ? (
+                      <img 
+                        src={product.image} 
+                        alt={product.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-neutral-800/40 flex items-center justify-center">
+                        <span className="text-neutral-600 text-xs font-mono">NO IMAGE</span>
+                      </div>
+                    )}
 
                     <button 
                       onClick={(e) => { e.stopPropagation(); triggerWishlist(product); }}
@@ -447,7 +428,7 @@ const Tshirt = ({
                           {product.title}
                         </h3>
                         <p className="text-xs sm:text-sm md:text-base font-bold text-neutral-100 font-mono mt-0.5">
-                          {product.price}
+                          {product.priceDisplay || `₹${product.priceNum?.toLocaleString('en-IN')}`}
                         </p>
                       </div>
                       

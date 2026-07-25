@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getProducts } from '../services/api';
 
 const COLOR_HEX_MAP = {
   Black: '#111111',
@@ -11,10 +12,20 @@ const COLOR_HEX_MAP = {
   Silver: '#9ca3af',
 };
 
+const GRID_CLASSES = [
+  "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[400px]",
+  "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]",
+  "col-span-1 row-span-2 h-[368px] sm:h-[504px] md:h-[624px]",
+  "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]",
+  "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[450px]",
+  "col-span-1 h-44 sm:h-60 md:h-[300px]",
+  "col-span-1 h-44 sm:h-60 md:h-[300px]",
+];
+
 const ProductCategory = ({ 
   title, 
-  products = [], 
-  cartItems = [], 
+  category,
+  cartItems, 
   setCartItems, 
   wishlistedIds = [], 
   setWishlistedIds 
@@ -23,6 +34,8 @@ const ProductCategory = ({
   const [wishlistAlert, setWishlistAlert] = useState(null);
   const [cartAlert, setCartAlert] = useState(null);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [sortBy, setSortBy] = useState('featured');
   const [selectedColors, setSelectedColors] = useState([]);
@@ -33,6 +46,16 @@ const ProductCategory = ({
   useEffect(() => { 
     window.scrollTo({ top: 0, behavior: 'smooth' }); 
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    getProducts(category)
+      .then((data) => { if (!cancelled) setProducts(data); })
+      .catch(() => { if (!cancelled) setProducts([]); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [category]);
 
   const availableColors = useMemo(() => {
     const colorSet = new Set();
@@ -161,7 +184,6 @@ const ProductCategory = ({
 
       {/* Navigation & Title Header Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-        {/* Navigation Action Toolbar */}
         <div className="flex items-center justify-between mb-3">
           <button 
             onClick={() => navigate(-1)}
@@ -185,7 +207,6 @@ const ProductCategory = ({
           </button>
         </div>
 
-        {/* Full-Width Section Header Banner (Matches NEW ARRIVAL layout) */}
         <div className="w-full bg-black border border-neutral-900/60 rounded-xl py-4 sm:py-6 flex items-center justify-center shadow-xl">
           <h1 className="text-neutral-300 text-xl sm:text-3xl lg:text-4xl font-black tracking-widest uppercase text-center">
             {title}
@@ -351,7 +372,15 @@ const ProductCategory = ({
       {/* Grid */}
       <section className="py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl w-full mx-auto">
-          {filteredProducts.length === 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className={`animate-pulse bg-[#141414] border border-neutral-900 rounded-2xl md:rounded-3xl overflow-hidden ${GRID_CLASSES[i % GRID_CLASSES.length]}`}>
+                  <div className="w-full h-full bg-neutral-800/40" />
+                </div>
+              ))}
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
               <svg className="w-12 h-12 text-neutral-700 mb-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
               <p className="text-sm font-mono font-bold tracking-wider text-neutral-500 uppercase">No products match your filters</p>
@@ -361,18 +390,24 @@ const ProductCategory = ({
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 auto-rows-max">
-              {filteredProducts.map((product) => {
+              {filteredProducts.map((product, idx) => {
                 const isWishlisted = wishlistedIds.includes(product.id);
                 return (
-                  <div key={product.id} onClick={() => navigate(`/product/${product.id}`)} data-aos="fade-up" data-aos-delay={(product.id % 6) * 100} className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] transition-all duration-500 cursor-pointer ${product.gridClass}`}>
-                    <img src={product.image} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                  <div key={product.id} onClick={() => navigate(`/product/${product.id}`)} data-aos="fade-up" data-aos-delay={(idx % 6) * 100} className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] transition-all duration-500 cursor-pointer ${product.gridClass || GRID_CLASSES[idx % GRID_CLASSES.length]}`}>
+                    {product.image ? (
+                      <img src={product.image} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    ) : (
+                      <div className="w-full h-full bg-neutral-800/40 flex items-center justify-center">
+                        <span className="text-neutral-600 text-xs font-mono">NO IMAGE</span>
+                      </div>
+                    )}
                     <button onClick={(e) => { e.stopPropagation(); triggerWishlist(product); }} className="absolute top-3 right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-black/70 transition-all z-10 cursor-pointer">
                       <svg className={`w-4 h-4 transition-colors duration-300 ${isWishlisted ? 'text-neutral-300 fill-current scale-110' : 'text-white'}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                     </button>
                     <div className="absolute bottom-3 left-3 right-3 md:bottom-4 md:left-4 md:right-4 bg-black/40 backdrop-blur-md rounded-xl md:rounded-2xl p-3 md:p-4 flex items-center justify-between border border-white/10 shadow-lg group-hover:bg-black/60 transition-colors duration-300">
                       <div className="min-w-0 flex-1 pr-2">
                         <h3 className="text-[10px] sm:text-xs md:text-sm font-mono tracking-wider text-neutral-200 uppercase font-bold truncate">{product.title}</h3>
-                        <p className="text-xs sm:text-sm md:text-base font-bold text-neutral-100 font-mono mt-0.5">{product.price}</p>
+                        <p className="text-xs sm:text-sm md:text-base font-bold text-neutral-100 font-mono mt-0.5">{product.priceDisplay || `₹${product.priceNum?.toLocaleString('en-IN')}`}</p>
                       </div>
                       <button onClick={(e) => { e.stopPropagation(); triggerCart(product); }} className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition active:scale-90 shrink-0 z-10 cursor-pointer">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5"/></svg>

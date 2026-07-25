@@ -1,43 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import dummyImage from '../assets/dummyImage.jpeg';
+import { getProducts } from '../services/api';
 
-const products = [
-  {
-    id: 1,
-    title: "BASEBALL CAP - RED",
-    price: "₹1,999.00",
-    image: dummyImage,
-    gridClass: "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[400px]"
-  },
-  {
-    id: 2,
-    title: "BASEBALL CAP - RED",
-    price: "₹1,999.00",
-    image: dummyImage,
-    gridClass: "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]"
-  },
-  {
-    id: 3,
-    title: "MADNESS CAP - BLK",
-    price: "₹1,899.00",
-    image: dummyImage,
-    gridClass: "col-span-1 row-span-2 h-[368px] sm:h-[504px] md:h-[624px]"
-  },
-  {
-    id: 4,
-    title: "BASEBALL CAP - RED",
-    price: "₹1,999.00",
-    image: dummyImage,
-    gridClass: "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]"
-  },
-  {
-    id: 5,
-    title: "BASEBALL CAP - RED",
-    price: "₹1,999.00",
-    image: dummyImage,
-    gridClass: "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[450px]"
-  }
+const GRID_CLASSES = [
+  "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[400px]",
+  "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]",
+  "col-span-1 row-span-2 h-[368px] sm:h-[504px] md:h-[624px]",
+  "col-span-1 md:col-span-2 h-44 sm:h-60 md:h-[300px]",
+  "col-span-2 md:col-span-3 h-52 sm:h-72 md:h-[450px]",
 ];
 
 const ProductGrid = ({ 
@@ -45,11 +15,30 @@ const ProductGrid = ({
   setCartItems, 
   wishlistedIds, 
   setWishlistedIds, 
-  onProductClick
+  onProductClick,
+  products: externalProducts,
+  loading: externalLoading
 }) => {
   const navigate = useNavigate();
   const [wishlistAlert, setWishlistAlert] = useState(null);
   const [cartAlert, setCartAlert] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (externalProducts) {
+      setProducts(externalProducts);
+      setLoading(externalLoading || false);
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    getProducts()
+      .then((data) => { if (!cancelled) setProducts(data); })
+      .catch(() => { if (!cancelled) setProducts([]); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [externalProducts, externalLoading]);
 
   const triggerWishlist = (product) => {
     const isAlreadyWishlisted = wishlistedIds.includes(product.id);
@@ -117,69 +106,85 @@ const ProductGrid = ({
 
       {/* Grid Container */}
       <div className="max-w-7xl w-full mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 auto-rows-max">
-          {products.map((product) => {
-            const isWishlisted = wishlistedIds.includes(product.id);
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className={`animate-pulse bg-[#141414] border border-neutral-900 rounded-2xl md:rounded-3xl overflow-hidden ${GRID_CLASSES[i % GRID_CLASSES.length]}`}>
+                <div className="w-full h-full bg-neutral-800/40" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 auto-rows-max">
+            {products.map((product, idx) => {
+              const isWishlisted = wishlistedIds.includes(product.id);
 
-            return (
-              <div 
-                key={product.id} 
-                onClick={() => {
-                  if (onProductClick) {
-                    onProductClick(product);
-                  } else {
-                    navigate(`/product/${product.id}`);
-                  }
-                }}
-                data-aos="fade-up"
-                data-aos-delay={product.id * 100}
-                className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] cursor-pointer transition-all duration-500 ${product.gridClass}`}
-              >
-                <img 
-                  src={product.image} 
-                  alt={product.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    triggerWishlist(product);
+              return (
+                <div 
+                  key={product.id} 
+                  onClick={() => {
+                    if (onProductClick) {
+                      onProductClick(product);
+                    } else {
+                      navigate(`/product/${product.id}`);
+                    }
                   }}
-                  className="absolute top-3 right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-black/70 transition-all z-10"
+                  data-aos="fade-up"
+                  data-aos-delay={idx * 100}
+                  className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-neutral-900 shadow-xl bg-[#141414] cursor-pointer transition-all duration-500 ${product.gridClass || GRID_CLASSES[idx % GRID_CLASSES.length]}`}
                 >
-                  <svg className={`w-4 h-4 transition-colors duration-300 ${isWishlisted ? 'text-neutral-300 fill-current scale-110' : 'text-white'}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                  </svg>
-                </button>
+                  {product.image ? (
+                    <img 
+                      src={product.image} 
+                      alt={product.title} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-neutral-800/40 flex items-center justify-center">
+                      <span className="text-neutral-600 text-xs font-mono">NO IMAGE</span>
+                    </div>
+                  )}
 
-                <div className="absolute bottom-3 left-3 right-3 md:bottom-4 md:left-4 md:right-4 bg-black/40 backdrop-blur-md rounded-xl md:rounded-2xl p-3 md:p-4 flex items-center justify-between border border-white/10 shadow-lg group-hover:bg-black/60 transition-colors duration-300">
-                  <div className="min-w-0 flex-1 pr-2">
-                    <h3 className="text-[10px] sm:text-xs md:text-sm font-mono tracking-wider text-neutral-200 uppercase font-bold truncate">
-                      {product.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm md:text-base font-bold text-neutral-100 font-mono mt-0.5">
-                      {product.price}
-                    </p>
-                  </div>
-                  
                   <button 
                     onClick={(e) => {
-                      e.stopPropagation(); 
-                      triggerCart(product);
+                      e.stopPropagation();
+                      triggerWishlist(product);
                     }}
-                    className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition active:scale-90 shrink-0 z-10"
+                    className="absolute top-3 right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/10 hover:bg-black/70 transition-all z-10"
                   >
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <path d="M12 5v14m7-7H5"/>
+                    <svg className={`w-4 h-4 transition-colors duration-300 ${isWishlisted ? 'text-neutral-300 fill-current scale-110' : 'text-white'}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                     </svg>
                   </button>
-                </div>
 
-              </div>
-            );
-          })}
-        </div>
+                  <div className="absolute bottom-3 left-3 right-3 md:bottom-4 md:left-4 md:right-4 bg-black/40 backdrop-blur-md rounded-xl md:rounded-2xl p-3 md:p-4 flex items-center justify-between border border-white/10 shadow-lg group-hover:bg-black/60 transition-colors duration-300">
+                    <div className="min-w-0 flex-1 pr-2">
+                      <h3 className="text-[10px] sm:text-xs md:text-sm font-mono tracking-wider text-neutral-200 uppercase font-bold truncate">
+                        {product.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm md:text-base font-bold text-neutral-100 font-mono mt-0.5">
+                        {product.priceDisplay || `₹${product.priceNum?.toLocaleString('en-IN')}`}
+                      </p>
+                    </div>
+                    
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation(); 
+                        triggerCart(product);
+                      }}
+                      className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition active:scale-90 shrink-0 z-10"
+                    >
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M12 5v14m7-7H5"/>
+                      </svg>
+                    </button>
+                  </div>
+
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );
