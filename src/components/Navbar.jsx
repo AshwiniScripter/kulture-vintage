@@ -294,3 +294,4 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, onCartClick }) => {
 };
 
 export default Navbar;
+
